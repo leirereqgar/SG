@@ -7,6 +7,8 @@ import { TrackballControls } from '../libs/TrackballControls.js'
 // Clases de mi proyecto
 
 import { Cubo } from './cubo.js'
+import { Cono } from './cono.js'
+import { Cilindro } from './cilindro.js'
 
 
 /// La clase fachada del modelo
@@ -42,17 +44,31 @@ class MyScene extends THREE.Scene {
 		// El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a
 		// la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
 		this.cubo = new Cubo(this.gui, "Controles del Cubo");
+		this.cono = new Cono(this.gui, "Controles del Cono");
+		this.cilindro = new Cilindro(this.gui, "Controles del Cilindro");
+
 		this.add (this.cubo);
+		this.add (this.cono);
+		this.add (this.cilindro);
 	}
 
 	createAxis() {
 		this.axis = new THREE.AxesHelper (5);
 		this.add (this.axis);
 
-		this.axisc = new THREE.AxesHelper(5);
-		this.add (this.axisc);
-		this.axisc.position.x = 5;
-		this.axisc.position.y = 5;
+		this.axiscu = new THREE.AxesHelper(5);
+		this.add (this.axiscu);
+		this.axiscu.position.x = 10;
+		this.axiscu.position.y = 5;
+
+		this.axisco = new THREE.AxesHelper(5);
+		this.add (this.axisco);
+		this.axisco.position.y = 5;
+
+		this.axisci = new THREE.AxesHelper(5);
+		this.add (this.axisci);
+		this.axisci.position.x = -10;
+		this.axisci.position.y = 5;
 	}
 
 	createCamera () {
@@ -175,6 +191,8 @@ class MyScene extends THREE.Scene {
 
 		// Se actualiza el resto del modelo
 		this.cubo.update();
+		this.cono.update();
+		this.cilindro.update()
 
 		// Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
 		// Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".
