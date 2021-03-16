@@ -13,18 +13,12 @@ class Cubo extends THREE.Object3D {
 		this.material.flatShading = true;
 		this.material.needsUpdate = true;
 
-		// A la base no se accede desde ningún método. Se almacena en una variable local del constructor.
-		this.box = this.createCubo();
+		// Cada figura, un Mesh, está compuesto de una geometría y un material
+		this.box = new THREE.Mesh (new THREE.BoxGeometry (1,1,1), this.material);
+		this.box.position.set(10,5,0)
 
 		// Al nodo  this, la Cubo, se le cuelgan como hijos la base y la parte móvil
 		this.add (this.box);
-	}
-
-	createCubo() {
-		// Cada figura, un Mesh, está compuesto de una geometría y un material
-		var cubo = new THREE.Mesh (new THREE.BoxGeometry (1,1,1), this.material);
-
-		return cubo;
 	}
 
 	createGUI (gui,titleGui) {
@@ -52,7 +46,8 @@ class Cubo extends THREE.Object3D {
 	}
 
 	update () {
-		this.box.rotation.y += 0.05;
+		this.box.rotation.x += 0.03;
+		this.box.rotation.y += 0.03;
 	}
 }
 
