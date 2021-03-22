@@ -9,6 +9,9 @@ import { TrackballControls } from '../libs/TrackballControls.js'
 import { Cubo } from './cubo.js'
 import { Cono } from './cono.js'
 import { Cilindro } from './cilindro.js'
+import { Esfera } from './esfera.js'
+import { Toro } from './toro.js'
+import { Icosaedro } from './icosaedro.js'
 
 
 /// La clase fachada del modelo
@@ -43,13 +46,19 @@ class MyScene extends THREE.Scene {
 		// Por último creamos el modelo.
 		// El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a
 		// la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
-		this.cubo = new Cubo(this.gui, "Controles del Cubo");
-		this.cono = new Cono(this.gui, "Controles del Cono");
+		this.cubo     = new Cubo(this.gui, "Controles del Cubo");
+		this.cono     = new Cono(this.gui, "Controles del Cono");
 		this.cilindro = new Cilindro(this.gui, "Controles del Cilindro");
+		this.esfera   = new Esfera(this.gui, "Controles de la Esfera");
+		this.toro     = new Toro(this.gui, "Controles del Toro");
+		this. icosaedro = new Icosaedro(this.gui, "Controles del Icosaedro");
 
 		this.add (this.cubo);
 		this.add (this.cono);
+		this.add (this.esfera);
 		this.add (this.cilindro);
+		this.add (this.toro);
+		this.add(this.icosaedro);
 	}
 
 	createAxis() {
@@ -69,6 +78,20 @@ class MyScene extends THREE.Scene {
 		this.add (this.axisci);
 		this.axisci.position.x = -10;
 		this.axisci.position.y = 5;
+
+		this.axises = new THREE.AxesHelper(5);
+		this.add (this.axises);
+		this.axises.position.x = 10;
+		this.axises.position.y = -5;
+
+		this.axisto = new THREE.AxesHelper(5);
+		this.add (this.axisto);
+		this.axisto.position.y = -5;
+
+		this.axisi = new THREE.AxesHelper(5);
+		this.add (this.axisi);
+		this.axisi.position.x = -10;
+		this.axisi.position.y = -5;
 	}
 
 	createCamera () {
@@ -192,7 +215,10 @@ class MyScene extends THREE.Scene {
 		// Se actualiza el resto del modelo
 		this.cubo.update();
 		this.cono.update();
-		this.cilindro.update()
+		this.cilindro.update();
+		this.esfera.update();
+		this.toro.update();
+		this.icosaedro.update();
 
 		// Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
 		// Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".
