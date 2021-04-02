@@ -3,6 +3,9 @@ import { GUI } from '../libs/dat.gui.module.js'
 import { TrackballControls } from '../libs/TrackballControls.js'
 
 import { Corazon } from './corazon.js'
+import { Trebol } from './trebol.js'
+import { Pica } from './pica.js'
+import { Diamante } from './diamante.js'
 
 class MyScene extends THREE.Scene {
 	constructor (myCanvas) {
@@ -17,7 +20,14 @@ class MyScene extends THREE.Scene {
 		this.add (this.axis);
 
 		this.corazon = new Corazon();
+		this.trebol = new Trebol();
+		this.pica = new Pica();
+		this.diamante = new Diamante();
+
 		this.add (this.corazon);
+		this.add(this.trebol);
+		this.add(this.pica);
+		this.add(this.diamante);
 	}
 
 	createCamera () {
@@ -96,6 +106,9 @@ class MyScene extends THREE.Scene {
 		this.cameraControl.update();
 
 		this.corazon.update();
+		this.trebol.update();
+		this.pica.update();
+		this.diamante.update();
 
 		this.renderer.render (this, this.getCamera());
 
