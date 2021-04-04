@@ -6,6 +6,7 @@ import { Corazon } from './corazon.js'
 import { Trebol } from './trebol.js'
 import { Pica } from './pica.js'
 import { Diamante } from './diamante.js'
+import { Barrido } from './barrido.js'
 
 class MyScene extends THREE.Scene {
 	constructor (myCanvas) {
@@ -19,15 +20,17 @@ class MyScene extends THREE.Scene {
 		this.axis = new THREE.AxesHelper (50);
 		this.add (this.axis);
 
-		this.corazon = new Corazon();
-		this.trebol = new Trebol();
-		this.pica = new Pica();
+		this.corazon  = new Corazon();
+		this.trebol   = new Trebol();
+		this.pica     = new Pica();
 		this.diamante = new Diamante();
+		this.barrido  = new Barrido();
 
 		this.add (this.corazon);
 		this.add(this.trebol);
 		this.add(this.pica);
 		this.add(this.diamante);
+		this.add(this.barrido);
 	}
 
 	createCamera () {
@@ -109,6 +112,7 @@ class MyScene extends THREE.Scene {
 		this.trebol.update();
 		this.pica.update();
 		this.diamante.update();
+		this.barrido.update();
 
 		this.renderer.render (this, this.getCamera());
 
