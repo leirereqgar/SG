@@ -6,8 +6,8 @@ class Ornitorrinco extends THREE.Object3D {
 		super();
 
 		this.a_cuerpo = 7;
-		this.l_cuerpo = 5;
-		this.h_cuerpo = 15;
+		this.h_cuerpo = 5;
+		this.l_cuerpo = 15;
 		this.a_pico   = 4;
 		this.l_pico   = 3;
 		this.h_pico   = 1;
@@ -21,6 +21,7 @@ class Ornitorrinco extends THREE.Object3D {
 		this.crearCuerpo();
 		this.crearCola();
 		this.crearPatas();
+		//this.crearSombrero();
 
 		this.add(this.cuerpo);
 		this.add(this.cola);
@@ -28,6 +29,8 @@ class Ornitorrinco extends THREE.Object3D {
 		this.add(this.pata_del_der);
 		this.add(this.pata_tras_izq);
 		this.add(this.pata_tras_der);
+
+		//this.add(this.sombrero);
 	}
 
 	crearMateriales() {
@@ -39,7 +42,7 @@ class Ornitorrinco extends THREE.Object3D {
 	crearCuerpo (){
 		this.cuerpo = new THREE.Object3D();
 
-		var geom = new THREE.BoxGeometry(this.a_cuerpo, this.l_cuerpo, this.h_cuerpo);
+		var geom = new THREE.BoxGeometry(this.a_cuerpo, this.h_cuerpo, this.l_cuerpo);
 		this.torax = new THREE.Mesh(geom,this.verde);
 		this.cuerpo.add(this.torax);
 
@@ -113,10 +116,25 @@ class Ornitorrinco extends THREE.Object3D {
 		this.pata_tras_der.position.z = -5.5;
 	}
 
+	crearSombrero() {
+		var ala = new THREE.Mesh(new THREE.BoxGeometry(4.1,1,4.1), this.marron);
+		var copa = new THREE.Mesh(new THREE.CylinderGeometry(1,2,2,4), this.marron);
+		copa.position.y = 1;
+
+		this.sombrero = new THREE.Object3D();
+		this.sombrero.add(ala);
+		this.sombrero.add(copa);
+		this.sombrero.position.y = 3;
+		this.sombrero.position.z = 3.5;
+	}
 
 	createGUI (gui,titleGui) {
 	}
 
+	mover(dist_x, dist_z) {
+		this.translateX(dist_x);
+		this.translateZ(dist_z);
+	}
 
 	update () {
 		this.cola.rotation.x = (1 - Math.sin(Date.now()/100)) * 0.5 -Math.PI/2;
