@@ -12,6 +12,8 @@ class Ornitorrinco extends THREE.Object3D {
 		this.l_pico   = 3;
 		this.h_pico   = 1;
 
+
+
 		// Se crea la parte de la interfaz que corresponde a la Ornitorrinco
 		// Se crea primero porque otros métodos usan las variables que se definen para la interfaz
 		this.createGUI(gui,titleGui);
@@ -23,12 +25,16 @@ class Ornitorrinco extends THREE.Object3D {
 		this.crearPatas();
 		//this.crearSombrero();
 
-		this.add(this.cuerpo);
-		this.add(this.cola);
-		this.add(this.pata_del_izq);
-		this.add(this.pata_del_der);
-		this.add(this.pata_tras_izq);
-		this.add(this.pata_tras_der);
+		this.rotable = new THREE.Object3D();
+		this.rotable.add(this.cuerpo);
+		this.rotable.add(this.cola);
+		this.rotable.add(this.pata_del_izq);
+		this.rotable.add(this.pata_del_der);
+		this.rotable.add(this.pata_tras_izq);
+		this.rotable.add(this.pata_tras_der);
+
+		this.add(this.rotable);
+		this.rotateY(Math.PI)
 
 		//this.add(this.sombrero);
 	}
@@ -131,9 +137,25 @@ class Ornitorrinco extends THREE.Object3D {
 	createGUI (gui,titleGui) {
 	}
 
-	mover(dist_x, dist_z) {
-		this.translateX(dist_x);
-		this.translateZ(dist_z);
+	mover(direccion) { // Estan invertidos la cardinalidad porque el objeto entero está girado
+		switch (direccion) {
+			case "LEFT":
+				this.translateX(15);
+				this.rotable.rotation.y = Math.PI / 2;
+			break;
+			case "UP":
+				this.translateZ(15);
+				this.rotable.rotation.y = 0;
+			break;
+			case "RIGHT":
+				this.translateX(-15);
+				this.rotable.rotation.y = 3 * Math.PI / 2;
+			break;
+			case "DOWN":
+				this.translateZ(-15);
+				this.rotable.rotation.y = Math.PI;
+			break;
+		}
 	}
 
 	update () {

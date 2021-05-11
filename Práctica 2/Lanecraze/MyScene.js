@@ -204,20 +204,20 @@ class MyScene extends THREE.Scene {
 	onKeyDown(event) {
 		var key = event.which || event.keyCode;
 
-		console.log(key);
+		//console.log(key);
 
 		switch(key) {
 			case 37:
-				this.model.mover(-15,0); //Izquierda
+				this.model.mover("LEFT"); //Izquierda
 			break;
 			case 38:
-				this.model.mover(0,-15); //Arriba
+				this.model.mover("UP"); //Arriba
 			break;
 			case 39:
-				this.model.mover(15,0); // Derecha
+				this.model.mover("RIGHT"); // Derecha
 			break;
 			case 40:
-				this.model.mover(0,15); // abajo
+				this.model.mover("DOWN"); // abajo
 			break;
 		}
 	}
