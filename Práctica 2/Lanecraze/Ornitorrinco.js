@@ -2,7 +2,7 @@ import * as THREE from '../libs/three.module.js'
 
 
 class Ornitorrinco extends THREE.Object3D {
-	constructor(gui,titleGui) {
+	constructor() {
 		super();
 
 		this.a_cuerpo = 7;
@@ -12,11 +12,16 @@ class Ornitorrinco extends THREE.Object3D {
 		this.l_pico   = 3;
 		this.h_pico   = 1;
 
+		this.t_anterior = Date.now();
+		this.momento = 0;
 
+		this.variacion = new THREE.Vector2(0,10);
+		this.tiempo = new THREE.Vector2(0,1);
+
+		this.subiendo = true;
 
 		// Se crea la parte de la interfaz que corresponde a la Ornitorrinco
 		// Se crea primero porque otros métodos usan las variables que se definen para la interfaz
-		this.createGUI(gui,titleGui);
 
 		this.crearMateriales();
 
@@ -134,9 +139,6 @@ class Ornitorrinco extends THREE.Object3D {
 		this.sombrero.position.z = 3.5;
 	}
 
-	createGUI (gui,titleGui) {
-	}
-
 	mover(direccion) { // Estan invertidos la cardinalidad porque el objeto entero está girado
 		switch (direccion) {
 			case "LEFT":
@@ -158,13 +160,36 @@ class Ornitorrinco extends THREE.Object3D {
 		}
 	}
 
+	saltito(t) {
+		var landa = ( t - this.tiempo.x ) / ( this.tiempo.y - this.tiempo.x );
+		var saltito = this.variacion.x + landa * (this.variacion.y - this.variacion.x);
+	}
+
 	update () {
+		//Cosas que se mueven siempre
 		this.cola.rotation.x = (1 - Math.sin(Date.now()/100)) * 0.5 -Math.PI/2;
 		this.pata_del_izq.rotation.x = (1 + Math.sin(Date.now()/100)) * 0.2;
 		this.pata_tras_izq.rotation.x = (1 + Math.sin(Date.now()/100)) * 0.2;
 
 		this.pata_del_der.rotation.x = (1 - Math.sin(Date.now()/100)) * 0.2;
 		this.pata_tras_der.rotation.x = (1 - Math.sin(Date.now()/100)) * 0.2;
+
+		this.rotable.position.y = this.saltito(this.momento);
+
+		var t_actual = Date.now();
+		var t_transcurrido = (t_actual - this.t_anterior) / 1000;
+
+		/*if(this.momento < this.tiempo.y && this.subiendo){
+			this.momento += t_transcurrido;
+			if(this.momento >= this.tiempo.y) this.subiendo = false;
+		}
+		else{
+			this.momento -= t_transcurrido;
+			if(this.momento <= this.tiempo.x) this.subiendo = true;
+		}*/
+
+		this.t_anterior = t_actual;
+
 	}
 }
 
