@@ -7,6 +7,7 @@ import { TrackballControls } from '../libs/TrackballControls.js'
 // Clases de mi proyecto
 
 import { Ornitorrinco } from './Ornitorrinco.js'
+import { Suelo } from './Suelo.js'
 
 
 /// La clase fachada del modelo
@@ -33,6 +34,7 @@ class MyScene extends THREE.Scene {
 		this.createLights ();
 
 		this.model = new Ornitorrinco(this.gui, "Controles de la Ornitorrinco");
+		this.model.position.set(7.5,3.5,7.5);
 		this.add (this.model);//
 
 		// Tendremos una cámara con un control de movimiento con el ratón
@@ -40,6 +42,8 @@ class MyScene extends THREE.Scene {
 
 		// Un suelo
 		//this.createGround ();
+		this.suelo = new Suelo();
+		this.add(this.suelo);
 
 		// Y unos ejes. Imprescindibles para orientarnos sobre dónde están las cosas
 		this.axis = new THREE.AxesHelper (5);
@@ -57,7 +61,7 @@ class MyScene extends THREE.Scene {
 		//   Los planos de recorte cercano y lejano
 		this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 		// También se indica dónde se coloca
-		this.camera.position.set (this.model.position.x+10, this.model.position.y + 20 , this.model.position.z + 20);
+		this.camera.position.set (this.model.position.x+10, this.model.position.y + 40 , this.model.position.z + 50);
 		// Y hacia dónde mira
 		var look = new THREE.Vector3 (this.model.position.x, this.model.position.y + 5 , this.model.position.z + 5);
 		this.camera.lookAt(look);
@@ -76,7 +80,7 @@ class MyScene extends THREE.Scene {
 	}
 
 	cameraUpdate() {
-		this.camera.position.set (this.model.position.x+10, this.model.position.y + 20 , this.model.position.z + 20);
+		this.camera.position.set (this.model.position.x+10, this.model.position.y + 40 , this.model.position.z + 50);
 		var look = new THREE.Vector3 (this.model.position.x, this.model.position.y + 5 , this.model.position.z + 5);
 		this.camera.lookAt(look);
 	}
@@ -85,11 +89,11 @@ class MyScene extends THREE.Scene {
 		// El suelo es un Mesh, necesita una geometría y un material.
 
 		// La geometría es una caja con muy poca altura
-		var geometryGround = new THREE.BoxGeometry (50,0.2,50);
+		var geometryGround = new THREE.BoxGeometry (150,0.2,150);
 
 		// El material se hará con una textura de madera
-		var texture = new THREE.TextureLoader().load('../imgs/wood.jpg');
-		var materialGround = new THREE.MeshPhongMaterial ({map: texture});
+		//var texture = new THREE.TextureLoader().load('../imgs/wood.jpg');
+		var materialGround = new THREE.MeshPhongMaterial (0x0000ff);
 
 		// Ya se puede construir el Mesh
 		var ground = new THREE.Mesh (geometryGround, materialGround);
@@ -99,7 +103,12 @@ class MyScene extends THREE.Scene {
 		ground.position.y = -0.1;
 
 		// Que no se nos olvide añadirlo a la escena, que en este caso es  this
-		this.add (ground);
+		this.gridhelper = new THREE.GridHelper(150, 10);
+
+
+
+		this.add (this.gridhelper);
+		this.add(ground);
 	}
 
 	createGUI () {
@@ -217,24 +226,24 @@ class MyScene extends THREE.Scene {
 
 		switch(key) {
 			case 37:
-				this.model.mover("LEFT"); //Izquierda
+				var nueva_pos = new THREE.Vector3(this.model.position.x-15,this.model.position.y, this.model.position.z);
+				if(this.suelo.inBounds(nueva_pos))
+					this.model.mover("LEFT"); //Izquierda
 			break;
 			case 38:
-				this.model.mover("UP"); //Arriba
-				//this.camera.position.set(50,50,this.model.position.z-10);
-				//this.camara.updateProjectionMatrix();
-				//this.nuevoTarget = this.model.position.clone();
-				//this.model.getWorldPosition(this.nuevoTarget);
-				//this.camera.lookAt(this.nuevoTarget);
-				//this.camara.updateProjectionMatrix();
+				var nueva_pos = new THREE.Vector3(this.model.position.x,this.model.position.y, this.model.position.z-15);
+				if(this.suelo.inBounds(nueva_pos))
+					this.model.mover("UP"); //Arriba
 			break;
 			case 39:
-				this.model.mover("RIGHT"); // Derecha
+				var nueva_pos = new THREE.Vector3(this.model.position.x+15,this.model.position.y, this.model.position.z);
+				if(this.suelo.inBounds(nueva_pos))
+					this.model.mover("RIGHT");// Derecha
 			break;
 			case 40:
-				this.model.mover("DOWN"); // abajo
-				//this.camera.position.set(50,50,this.model.position.z+10);
-				//this.camara.updateProjectionMatrix();
+				var nueva_pos = new THREE.Vector3(this.model.position.x,this.model.position.y, this.model.position.z+15);
+				if(this.suelo.inBounds(nueva_pos))
+					this.model.mover("DOWN"); // abajo
 			break;
 		}
 	}
