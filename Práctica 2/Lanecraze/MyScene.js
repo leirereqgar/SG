@@ -32,6 +32,9 @@ class MyScene extends THREE.Scene {
 		// Tras crear cada elemento se añadirá a la escena con   this.add(variable)
 		this.createLights ();
 
+		this.model = new Ornitorrinco(this.gui, "Controles de la Ornitorrinco");
+		this.add (this.model);//
+
 		// Tendremos una cámara con un control de movimiento con el ratón
 		this.createCamera ();
 
@@ -45,8 +48,6 @@ class MyScene extends THREE.Scene {
 		// Por último creamos el modelo.
 		// El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a
 		// la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
-		this.model = new Ornitorrinco(this.gui, "Controles de la Ornitorrinco");
-		this.add (this.model);
 	}
 
 	createCamera () {
@@ -56,21 +57,28 @@ class MyScene extends THREE.Scene {
 		//   Los planos de recorte cercano y lejano
 		this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 		// También se indica dónde se coloca
-		this.camera.position.set (6, 3, 6);
+		this.camera.position.set (this.model.position.x+10, this.model.position.y + 20 , this.model.position.z + 20);
 		// Y hacia dónde mira
-		var look = new THREE.Vector3 (0,0,0);
+		var look = new THREE.Vector3 (this.model.position.x, this.model.position.y + 5 , this.model.position.z + 5);
 		this.camera.lookAt(look);
 		this.add (this.camera);
 
 		// Para el control de cámara usamos una clase que ya tiene implementado los movimientos de órbita
-		this.cameraControl = new TrackballControls (this.camera, this.renderer.domElement);
+		/*this.cameraControl = new TrackballControls (this.camera, this.renderer.domElement);
 
 		// Se configuran las velocidades de los movimientos
 		this.cameraControl.rotateSpeed = 5;
 		this.cameraControl.zoomSpeed = -2;
 		this.cameraControl.panSpeed = 0.5;
+		//this.cameraControl.enabled = false;
 		// Debe orbitar con respecto al punto de mira de la cámara
-		this.cameraControl.target = look;
+		this.cameraControl.target = look;*/
+	}
+
+	cameraUpdate() {
+		this.camera.position.set (this.model.position.x+10, this.model.position.y + 20 , this.model.position.z + 20);
+		var look = new THREE.Vector3 (this.model.position.x, this.model.position.y + 5 , this.model.position.z + 5);
+		this.camera.lookAt(look);
 	}
 
 	createGround () {
@@ -190,7 +198,8 @@ class MyScene extends THREE.Scene {
 		this.axis.visible = this.guiControls.axisOnOff;
 
 		// Se actualiza la posición de la cámara según su controlador
-		this.cameraControl.update();
+		//this.cameraControl.update();
+		this.cameraUpdate();
 
 		// Se actualiza el resto del modelo
 		this.model.update();
@@ -212,12 +221,20 @@ class MyScene extends THREE.Scene {
 			break;
 			case 38:
 				this.model.mover("UP"); //Arriba
+				//this.camera.position.set(50,50,this.model.position.z-10);
+				//this.camara.updateProjectionMatrix();
+				//this.nuevoTarget = this.model.position.clone();
+				//this.model.getWorldPosition(this.nuevoTarget);
+				//this.camera.lookAt(this.nuevoTarget);
+				//this.camara.updateProjectionMatrix();
 			break;
 			case 39:
 				this.model.mover("RIGHT"); // Derecha
 			break;
 			case 40:
 				this.model.mover("DOWN"); // abajo
+				//this.camera.position.set(50,50,this.model.position.z+10);
+				//this.camara.updateProjectionMatrix();
 			break;
 		}
 	}
