@@ -10,20 +10,14 @@ class Suelo extends THREE.Object3D {
 		this.ancho = this.casillas_ancho * 15;
 		this.largo = this.casillas_largo * 15;
 
-		this.crearTableroVirtual(v_gen);
 		this.crearMateriales();
+
+		this.crearTableroVirtual(v_gen);
 		this.crearTableroFisico();
 
-		// Ya se puede construir el Mesh
-
-		// Todas las figuras se crean centradas en el origen.
 		// El suelo lo bajamos la mitad de su altura para que el origen del mundo se quede en su lado superior
 		this.ground.position.y = -0.1;
 
-		// Que no se nos olvide añadirlo a la escena, que en este caso es  this
-		var gridhelper = new THREE.GridHelper(this.ancho*2, 20);
-
-		//this.add (gridhelper);
 		this.add (this.ground);
 	}
 
@@ -82,6 +76,10 @@ class Suelo extends THREE.Object3D {
 			offset -= 15;
 		}
 
+	}
+
+	getAncho() {
+		return this.ancho;
 	}
 
 	getLargo(){
