@@ -30,7 +30,7 @@ class Suelo extends THREE.Object3D {
 		this.grass_material = new THREE.MeshPhongMaterial ({map: grass_texture});
 
 		const water_texture = loader.load('../imgs/water-texture.gif');
-		water_texture.wrapS = grass_texture.wrapT = THREE.RepeatWrapping;
+		water_texture.wrapS = water_texture.wrapT = THREE.RepeatWrapping;
 		water_texture.repeat.set(10,1);
 		this.water_material = new THREE.MeshPhongMaterial ({map: water_texture});
 

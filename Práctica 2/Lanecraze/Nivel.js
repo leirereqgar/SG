@@ -4,6 +4,7 @@ import { GUI } from '../libs/dat.gui.module.js'
 import { TrackballControls } from '../libs/TrackballControls.js'
 
 import { Suelo } from './Suelo.js'
+import { Arbol } from './Arbol.js'
 
 class Nivel extends THREE.Object3D {
 	constructor() {
@@ -18,6 +19,10 @@ class Nivel extends THREE.Object3D {
 		this.suelo = new Suelo(v_gen);
 		this.suelo.position.set(0,0, -this.suelo.getLargo()/2);
 		this.add(this.suelo);
+
+
+		//var arbol = new Arbol(6);
+		//this.add(arbol);
 	}
 
 	inBounds(coord) {
