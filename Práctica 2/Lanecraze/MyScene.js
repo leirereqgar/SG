@@ -5,6 +5,8 @@ import { TrackballControls } from '../libs/TrackballControls.js'
 
 //PROYECTO
 import { Ornitorrinco } from './Ornitorrinco.js'
+import { Nivel } from './Nivel.js'
+
 class MyScene extends THREE.Scene {
 	constructor (myCanvas) {
 		super();
@@ -17,9 +19,13 @@ class MyScene extends THREE.Scene {
 		// Crear las luces
 		this.createLights ();
 
+
+		this.nivel = new Nivel();
+		this.add(this.nivel);
+
 		this.model = new Ornitorrinco();
 		this.model.position.set(7.5,3.5,0);
-		//this.add (this.model);//
+		this.add (this.model);
 		// Tendremos una cámara con un control de movimiento con el ratón
 		this.createCamera ();
 	}
@@ -134,26 +140,27 @@ class MyScene extends THREE.Scene {
 
 	onKeyDown(event) {
 		var key = event.which || event.keyCode;
+		console.log(key);
 
 		switch(key) {
 			case 37:
 				var nueva_pos = this.model.siguientePos("LEFT");
-				if(this.suelo.inBounds(nueva_pos))
+				if(this.nivel.inBounds(nueva_pos))
 					this.model.mover("LEFT"); //Izquierda
 			break;
 			case 38:
 				var nueva_pos = this.model.siguientePos("UP");
-				if(this.suelo.inBounds(nueva_pos))
+				if(this.nivel.inBounds(nueva_pos))
 					this.model.mover("UP"); //Arriba
 			break;
 			case 39:
 				var nueva_pos = this.model.siguientePos("RIGHT");
-				if(this.suelo.inBounds(nueva_pos))
+				if(this.nivel.inBounds(nueva_pos))
 					this.model.mover("RIGHT");// Derecha
 			break;
 			case 40:
 				var nueva_pos = this.model.siguientePos("DOWN");
-				if(this.suelo.inBounds(nueva_pos))
+				if(this.nivel.inBounds(nueva_pos))
 					this.model.mover("DOWN"); // abajo
 			break;
 		}
