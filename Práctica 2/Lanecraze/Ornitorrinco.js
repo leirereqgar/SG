@@ -137,7 +137,29 @@ class Ornitorrinco extends THREE.Object3D {
 	createGUI (gui,titleGui) {
 	}
 
+	siguientePos(direccion){
+		var next;
+
+		switch (direccion) {
+			case "LEFT":
+				next = new THREE.Vector3(this.position.x-15,this.position.y, this.position.z);;
+			break;
+			case "UP":
+				next = new THREE.Vector3(this.position.x,this.position.y, this.position.z-15);
+			break;
+			case "RIGHT":
+				next = new THREE.Vector3(this.position.x+15,this.position.y, this.position.z);
+			break;
+			case "DOWN":
+				next = new THREE.Vector3(this.position.x,this.position.y, this.position.z+15);
+			break;
+		}
+
+		return next
+	}
+
 	mover(direccion) { // Estan invertidos la cardinalidad porque el objeto entero está girado
+
 		switch (direccion) {
 			case "LEFT":
 				this.translateX(15);

@@ -226,6 +226,29 @@ class MyScene extends THREE.Scene {
 
 		switch(key) {
 			case 37:
+				var nueva_pos = this.model.siguientePos("LEFT");
+				if(this.suelo.inBounds(nueva_pos))
+					this.model.mover("LEFT"); //Izquierda
+			break;
+			case 38:
+				var nueva_pos = this.model.siguientePos("UP");
+				if(this.suelo.inBounds(nueva_pos))
+					this.model.mover("UP"); //Arriba
+			break;
+			case 39:
+				var nueva_pos = this.model.siguientePos("RIGHT");
+				if(this.suelo.inBounds(nueva_pos))
+					this.model.mover("RIGHT");// Derecha
+			break;
+			case 40:
+				var nueva_pos = this.model.siguientePos("DOWN");
+				if(this.suelo.inBounds(nueva_pos))
+					this.model.mover("DOWN"); // abajo
+			break;
+		}
+
+		/*switch(key) {
+			case 37:
 				var nueva_pos = new THREE.Vector3(this.model.position.x-15,this.model.position.y, this.model.position.z);
 				if(this.suelo.inBounds(nueva_pos))
 					this.model.mover("LEFT"); //Izquierda
@@ -245,7 +268,7 @@ class MyScene extends THREE.Scene {
 				if(this.suelo.inBounds(nueva_pos))
 					this.model.mover("DOWN"); // abajo
 			break;
-		}
+		}*/
 	}
 }
 
