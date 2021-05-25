@@ -34,15 +34,20 @@ class MyScene extends THREE.Scene {
 		this.createLights ();
 
 		this.model = new Ornitorrinco(this.gui, "Controles de la Ornitorrinco");
-		this.model.position.set(7.5,3.5,-7.5);
+		this.model.position.set(7.5,3.5,0);
 		this.add (this.model);//
 
 		// Tendremos una cámara con un control de movimiento con el ratón
 		this.createCamera ();
 
 		// Un suelo
-		//this.createGround ();
-		this.suelo = new Suelo();
+		var v_gen = new Array(3);
+		v_gen[0] = new THREE.Vector2(10,0);
+		v_gen[1] = new THREE.Vector2(10,1);
+		v_gen[2] = new THREE.Vector2(10,2);
+
+		//console.log(v_gen);
+		this.suelo = new Suelo(v_gen);
 		this.suelo.position.set(0,0, -this.suelo.getLargo()/2);
 		this.add(this.suelo);
 
@@ -84,32 +89,6 @@ class MyScene extends THREE.Scene {
 		this.camera.position.set (this.model.position.x+10, this.model.position.y + 40 , this.model.position.z + 50);
 		var look = new THREE.Vector3 (this.model.position.x, this.model.position.y + 5 , this.model.position.z + 5);
 		this.camera.lookAt(look);
-	}
-
-	createGround () {
-		// El suelo es un Mesh, necesita una geometría y un material.
-
-		// La geometría es una caja con muy poca altura
-		var geometryGround = new THREE.BoxGeometry (150,0.2,150);
-
-		// El material se hará con una textura de madera
-		//var texture = new THREE.TextureLoader().load('../imgs/wood.jpg');
-		var materialGround = new THREE.MeshPhongMaterial (0x0000ff);
-
-		// Ya se puede construir el Mesh
-		var ground = new THREE.Mesh (geometryGround, materialGround);
-
-		// Todas las figuras se crean centradas en el origen.
-		// El suelo lo bajamos la mitad de su altura para que el origen del mundo se quede en su lado superior
-		ground.position.y = -0.1;
-
-		// Que no se nos olvide añadirlo a la escena, que en este caso es  this
-		this.gridhelper = new THREE.GridHelper(150, 10);
-
-
-
-		this.add (this.gridhelper);
-		this.add(ground);
 	}
 
 	createGUI () {

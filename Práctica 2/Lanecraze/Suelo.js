@@ -1,29 +1,87 @@
 import * as THREE from '../libs/three.module.js'
 
+import {TipoSuelo} from './TipoSuelo.js'
 
 class Suelo extends THREE.Object3D {
-	constructor() {
+	constructor(v_gen) {
 		super();
+		this.casillas_ancho = 10;
+		this.casillas_largo = this.casillas_ancho * 3;
+		this.ancho = this.casillas_ancho * 15;
+		this.largo = this.casillas_largo * 15;
 
-		this.ancho = 10 * 15;
-		this.largo = 30 * 15;
-
-		var geometryGround = new THREE.BoxGeometry (this.ancho,0.2,this.largo);
-
-		var materialGround = new THREE.MeshPhongMaterial ({color: 0x00ff00});
+		this.crearTableroVirtual(v_gen);
+		this.crearMateriales();
+		this.crearTableroFisico();
 
 		// Ya se puede construir el Mesh
-		var ground = new THREE.Mesh (geometryGround, materialGround);
 
 		// Todas las figuras se crean centradas en el origen.
 		// El suelo lo bajamos la mitad de su altura para que el origen del mundo se quede en su lado superior
-		ground.position.y = -0.1;
+		this.ground.position.y = -0.1;
 
 		// Que no se nos olvide añadirlo a la escena, que en este caso es  this
 		var gridhelper = new THREE.GridHelper(this.ancho*2, 20);
 
 		//this.add (gridhelper);
-		this.add (ground);
+		this.add (this.ground);
+	}
+
+	crearMateriales() {
+		this.grass_material = new THREE.MeshPhongMaterial ({color: 0x00ff00});
+		this.water_material = new THREE.MeshPhongMaterial ({color: 0x4ad2f7});
+		this.road_material = new THREE.MeshPhongMaterial ({color: 0x595959});
+	}
+
+	crearTableroVirtual(v_gen) {
+		this.tablero_virtual = new Array(this.casillas_largo);
+		for(var i = 0; i < this.casillas_largo; i++){
+			this.tablero_virtual[i] = new TipoSuelo();
+		}
+
+		var indice = 0;
+		for(var i = 0; i < v_gen.length; i++){
+			for (var j = 0; j < v_gen[i].x; j++){
+				this.tablero_virtual[indice].setTipo(v_gen[i].y);
+				indice++;
+			}
+		}
+	}
+
+	crearTableroFisico(){
+		this.ground = new THREE.Object3D();
+		var offset = this.largo/2;
+		for(var i = 0; i < this.casillas_largo; i++) {
+			var geometryGround = new THREE.BoxGeometry (this.ancho,0.2,15);
+			switch (this.tablero_virtual[i].getTipo()) {
+				case 0:
+					var fila = new THREE.Mesh(geometryGround, this.grass_material);
+					fila.position.z = offset;
+
+					this.ground.add(fila);
+				break;
+
+				case 1:
+					var fila = new THREE.Mesh(geometryGround, this.road_material);
+					fila.position.z = offset;
+					this.ground.add(fila);
+				break;
+
+				case 2:
+					var fila = new THREE.Mesh(geometryGround, this.water_material);
+					fila.position.z = offset;
+					this.ground.add(fila);
+				break;
+
+				default:
+					var fila = new THREE.Mesh(geometryGround, this.grass_material);
+					fila.position.z = offset;
+
+					this.ground.add(fila);
+			}
+			offset -= 15;
+		}
+
 	}
 
 	getLargo(){
