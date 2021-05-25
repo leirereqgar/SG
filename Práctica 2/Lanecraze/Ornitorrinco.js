@@ -2,7 +2,7 @@ import * as THREE from '../libs/three.module.js'
 
 
 class Ornitorrinco extends THREE.Object3D {
-	constructor(gui,titleGui) {
+	constructor() {
 		super();
 
 		this.a_cuerpo = 7;
@@ -12,11 +12,6 @@ class Ornitorrinco extends THREE.Object3D {
 		this.l_pico   = 3;
 		this.h_pico   = 1;
 
-
-
-		// Se crea la parte de la interfaz que corresponde a la Ornitorrinco
-		// Se crea primero porque otros métodos usan las variables que se definen para la interfaz
-		this.createGUI(gui,titleGui);
 
 		this.crearMateriales();
 
@@ -132,9 +127,6 @@ class Ornitorrinco extends THREE.Object3D {
 		this.sombrero.add(copa);
 		this.sombrero.position.y = 3;
 		this.sombrero.position.z = 3.5;
-	}
-
-	createGUI (gui,titleGui) {
 	}
 
 	siguientePos(direccion){

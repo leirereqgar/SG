@@ -1,63 +1,27 @@
-// Clases de la biblioteca
-
+// BIBLIOTECAS
 import * as THREE from '../libs/three.module.js'
 import { GUI } from '../libs/dat.gui.module.js'
 import { TrackballControls } from '../libs/TrackballControls.js'
 
-// Clases de mi proyecto
-
+//PROYECTO
 import { Ornitorrinco } from './Ornitorrinco.js'
-import { Suelo } from './Suelo.js'
-
-
-/// La clase fachada del modelo
-/**
- * Usaremos una clase derivada de la clase Scene de Three.js para llevar el control de la escena y de todo lo que ocurre en ella.
- */
-
 class MyScene extends THREE.Scene {
-	// Recibe el  div  que se ha creado en el  html  que va a ser el lienzo en el que mostrar
-	// la visualización de la escena
 	constructor (myCanvas) {
 		super();
+
 
 		// Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
 		this.renderer = this.createRenderer(myCanvas);
 
-		// Se crea la interfaz gráfica de usuario
-		this.gui = this.createGUI ();
 
-		// Construimos los distinos elementos que tendremos en la escena
-
-		// Todo elemento que se desee sea tenido en cuenta en el renderizado de la escena debe pertenecer a esta. Bien como hijo de la escena (this en esta clase) o como hijo de un elemento que ya esté en la escena.
-		// Tras crear cada elemento se añadirá a la escena con   this.add(variable)
+		// Crear las luces
 		this.createLights ();
 
-		this.model = new Ornitorrinco(this.gui, "Controles de la Ornitorrinco");
+		this.model = new Ornitorrinco();
 		this.model.position.set(7.5,3.5,0);
-		this.add (this.model);//
-
+		//this.add (this.model);//
 		// Tendremos una cámara con un control de movimiento con el ratón
 		this.createCamera ();
-
-		// Un suelo
-		var v_gen = new Array(3);
-		v_gen[0] = new THREE.Vector2(10,0);
-		v_gen[1] = new THREE.Vector2(10,1);
-		v_gen[2] = new THREE.Vector2(10,2);
-
-		//console.log(v_gen);
-		this.suelo = new Suelo(v_gen);
-		this.suelo.position.set(0,0, -this.suelo.getLargo()/2);
-		this.add(this.suelo);
-
-		// Y unos ejes. Imprescindibles para orientarnos sobre dónde están las cosas
-		this.axis = new THREE.AxesHelper (5);
-		this.add (this.axis);
-
-		// Por último creamos el modelo.
-		// El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a
-		// la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
 	}
 
 	createCamera () {
@@ -91,31 +55,6 @@ class MyScene extends THREE.Scene {
 		this.camera.lookAt(look);
 	}
 
-	createGUI () {
-		// Se crea la interfaz gráfica de usuario
-		var gui = new GUI();
-
-		// La escena le va a añadir sus propios controles.
-		// Se definen mediante una   new function()
-		// En este caso la intensidad de la luz y si se muestran o no los ejes
-		this.guiControls = new function() {
-			// En el contexto de una función   this   alude a la función
-			this.lightIntensity = 0.5;
-			this.axisOnOff = true;
-		}
-
-		// Se crea una sección para los controles de esta clase
-		var folder = gui.addFolder ('Luz y Ejes');
-
-		// Se le añade un control para la intensidad de la luz
-		folder.add (this.guiControls, 'lightIntensity', 0, 1, 0.1).name('Intensidad de la Luz : ');
-
-		// Y otro para mostrar u ocultar los ejes
-		folder.add (this.guiControls, 'axisOnOff').name ('Mostrar ejes : ');
-
-		return gui;
-	}
-
 	createLights () {
 		// Se crea una luz ambiental, evita que se vean complentamente negras las zonas donde no incide de manera directa una fuente de luz
 		// La luz ambiental solo tiene un color y una intensidad
@@ -129,7 +68,7 @@ class MyScene extends THREE.Scene {
 		// La luz focal, además tiene una posición, y un punto de mira
 		// Si no se le da punto de mira, apuntará al (0,0,0) en coordenadas del mundo
 		// En este caso se declara como   this.atributo   para que sea un atributo accesible desde otros métodos.
-		this.spotLight = new THREE.SpotLight( 0xffffff, this.guiControls.lightIntensity );
+		this.spotLight = new THREE.SpotLight( 0xffffff, 0.5);
 		this.spotLight.position.set( 60, 1000, 40 );
 		this.add (this.spotLight);
 	}
@@ -179,12 +118,6 @@ class MyScene extends THREE.Scene {
 		// Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
 		this.renderer.render (this, this.getCamera());
 
-		// Se actualizan los elementos de la escena para cada frame
-		// Se actualiza la intensidad de la luz con lo que haya indicado el usuario en la gui
-		this.spotLight.intensity = this.guiControls.lightIntensity;
-
-		// Se muestran o no los ejes según lo que idique la GUI
-		this.axis.visible = this.guiControls.axisOnOff;
 
 		// Se actualiza la posición de la cámara según su controlador
 		//this.cameraControl.update();
@@ -201,8 +134,6 @@ class MyScene extends THREE.Scene {
 
 	onKeyDown(event) {
 		var key = event.which || event.keyCode;
-
-		//console.log(key);
 
 		switch(key) {
 			case 37:
@@ -226,32 +157,8 @@ class MyScene extends THREE.Scene {
 					this.model.mover("DOWN"); // abajo
 			break;
 		}
-
-		/*switch(key) {
-			case 37:
-				var nueva_pos = new THREE.Vector3(this.model.position.x-15,this.model.position.y, this.model.position.z);
-				if(this.suelo.inBounds(nueva_pos))
-					this.model.mover("LEFT"); //Izquierda
-			break;
-			case 38:
-				var nueva_pos = new THREE.Vector3(this.model.position.x,this.model.position.y, this.model.position.z-15);
-				if(this.suelo.inBounds(nueva_pos))
-					this.model.mover("UP"); //Arriba
-			break;
-			case 39:
-				var nueva_pos = new THREE.Vector3(this.model.position.x+15,this.model.position.y, this.model.position.z);
-				if(this.suelo.inBounds(nueva_pos))
-					this.model.mover("RIGHT");// Derecha
-			break;
-			case 40:
-				var nueva_pos = new THREE.Vector3(this.model.position.x,this.model.position.y, this.model.position.z+15);
-				if(this.suelo.inBounds(nueva_pos))
-					this.model.mover("DOWN"); // abajo
-			break;
-		}*/
 	}
 }
-
 
 /// La función   main
 $(function () {
