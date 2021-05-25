@@ -34,7 +34,7 @@ class MyScene extends THREE.Scene {
 		this.createLights ();
 
 		this.model = new Ornitorrinco(this.gui, "Controles de la Ornitorrinco");
-		this.model.position.set(7.5,3.5,7.5);
+		this.model.position.set(7.5,3.5,-7.5);
 		this.add (this.model);//
 
 		// Tendremos una cámara con un control de movimiento con el ratón
@@ -43,6 +43,7 @@ class MyScene extends THREE.Scene {
 		// Un suelo
 		//this.createGround ();
 		this.suelo = new Suelo();
+		this.suelo.position.set(0,0, -this.suelo.getLargo()/2);
 		this.add(this.suelo);
 
 		// Y unos ejes. Imprescindibles para orientarnos sobre dónde están las cosas
@@ -150,7 +151,7 @@ class MyScene extends THREE.Scene {
 		// Si no se le da punto de mira, apuntará al (0,0,0) en coordenadas del mundo
 		// En este caso se declara como   this.atributo   para que sea un atributo accesible desde otros métodos.
 		this.spotLight = new THREE.SpotLight( 0xffffff, this.guiControls.lightIntensity );
-		this.spotLight.position.set( 60, 60, 40 );
+		this.spotLight.position.set( 60, 1000, 40 );
 		this.add (this.spotLight);
 	}
 
