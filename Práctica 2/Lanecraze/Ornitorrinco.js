@@ -4,13 +4,12 @@ import * as THREE from '../libs/three.module.js'
 class Ornitorrinco extends THREE.Object3D {
 	constructor() {
 		super();
-
 		this.a_cuerpo = 7;
 		this.h_cuerpo = 5;
 		this.l_cuerpo = 15;
 		this.a_pico   = 4;
-		this.l_pico   = 3;
 		this.h_pico   = 1;
+		this.l_pico   = 3;
 
 
 		this.crearMateriales();
@@ -20,16 +19,17 @@ class Ornitorrinco extends THREE.Object3D {
 		this.crearPatas();
 		//this.crearSombrero();
 
-		this.rotable = new THREE.Object3D();
-		this.rotable.add(this.cuerpo);
-		this.rotable.add(this.cola);
-		this.rotable.add(this.pata_del_izq);
-		this.rotable.add(this.pata_del_der);
-		this.rotable.add(this.pata_tras_izq);
-		this.rotable.add(this.pata_tras_der);
+		// Tenemos un nodo justo antes del this para que al mover el personaje los controles no queden invertidos
+		this.movil = new THREE.Object3D();
+		this.movil.add(this.cuerpo);
+		this.movil.add(this.cola);
+		this.movil.add(this.pata_del_izq);
+		this.movil.add(this.pata_del_der);
+		this.movil.add(this.pata_tras_izq);
+		this.movil.add(this.pata_tras_der);
 
-		this.add(this.rotable);
-		this.rotateY(Math.PI)
+		this.add(this.movil);
+		this.rotateY(Math.PI);
 
 		//this.add(this.sombrero);
 	}
@@ -41,39 +41,39 @@ class Ornitorrinco extends THREE.Object3D {
 	}
 
 	crearCuerpo (){
-		this.cuerpo = new THREE.Object3D();
+		this.cuerpo = new THREE.Object3D(); // De aquí colgaremos el torax, pico y ojos
 
 		var geom = new THREE.BoxGeometry(this.a_cuerpo, this.h_cuerpo, this.l_cuerpo);
-		this.torax = new THREE.Mesh(geom,this.verde);
-		this.cuerpo.add(this.torax);
+		var torax = new THREE.Mesh(geom,this.verde);
+		this.cuerpo.add(torax);
 
 		var geom_pico = new THREE.BoxGeometry(this.a_pico, this.h_pico, this.l_pico);
-		this.pico = new THREE.Mesh(geom_pico, this.naranja);
-		this.pico.geometry.translate(0,-1,9);
-		this.cuerpo.add(this.pico);
+		var pico = new THREE.Mesh(geom_pico, this.naranja);
+		pico.geometry.translate(0,-1,9);
+		this.cuerpo.add(pico);
 
 		var geom_ojo = new THREE.BoxGeometry(1, 1, 1);
 		var parte_blanca = new THREE.Mesh(geom_ojo);
 		var pupila = new THREE.Mesh(geom_ojo, this.marron);
 		pupila.position.x = 1;
-		this.ojo_derecho = new THREE.Object3D();
-		this.ojo_derecho.add(parte_blanca);
-		this.ojo_derecho.add(pupila);
-		this.ojo_derecho.position.x = 1.5;
-		this.ojo_derecho.position.y = 1.25;
-		this.ojo_derecho.position.z = 7.5;
-		this.cuerpo.add(this.ojo_derecho);
+		var ojo_derecho = new THREE.Object3D();
+		ojo_derecho.add(parte_blanca);
+		ojo_derecho.add(pupila);
+		ojo_derecho.position.x = 1.5;
+		ojo_derecho.position.y = 1.25;
+		ojo_derecho.position.z = 7.5;
+		this.cuerpo.add(ojo_derecho);
 
 		var parte_blanca_i = new THREE.Mesh(geom_ojo);
 		var pupila_i = new THREE.Mesh(geom_ojo, this.marron);
 		pupila_i.position.x = -1;
-		this.ojo_izquierdo = new THREE.Object3D();
-		this.ojo_izquierdo.add(parte_blanca_i);
-		this.ojo_izquierdo.add(pupila_i);
-		this.ojo_izquierdo.position.x = -1.5;
-		this.ojo_izquierdo.position.y = 1.25;
-		this.ojo_izquierdo.position.z = 7.5;
-		this.cuerpo.add(this.ojo_izquierdo);
+		var ojo_izquierdo = new THREE.Object3D();
+		ojo_izquierdo.add(parte_blanca_i);
+		ojo_izquierdo.add(pupila_i);
+		ojo_izquierdo.position.x = -1.5;
+		ojo_izquierdo.position.y = 1.25;
+		ojo_izquierdo.position.z = 7.5;
+		this.cuerpo.add(ojo_izquierdo);
 	}
 
 	crearCola() {
@@ -151,23 +151,22 @@ class Ornitorrinco extends THREE.Object3D {
 	}
 
 	mover(direccion) { // Estan invertidos la cardinalidad porque el objeto entero está girado
-
 		switch (direccion) {
 			case "LEFT":
 				this.translateX(15);
-				this.rotable.rotation.y = Math.PI / 2;
+				this.movil.rotation.y = Math.PI / 2;
 			break;
 			case "UP":
 				this.translateZ(15);
-				this.rotable.rotation.y = 0;
+				this.movil.rotation.y = 0;
 			break;
 			case "RIGHT":
 				this.translateX(-15);
-				this.rotable.rotation.y = 3 * Math.PI / 2;
+				this.movil.rotation.y = 3 * Math.PI / 2;
 			break;
 			case "DOWN":
 				this.translateZ(-15);
-				this.rotable.rotation.y = Math.PI;
+				this.movil.rotation.y = Math.PI;
 			break;
 		}
 	}
