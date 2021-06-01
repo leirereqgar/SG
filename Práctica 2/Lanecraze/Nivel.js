@@ -26,22 +26,28 @@ class Nivel extends THREE.Object3D {
 		this.add(this.suelo);
 
 
-		this.arbol = new Arbol(2);
-		this.arbol.position.set(-30+15/2,0,-30);
+		var arbol = new Arbol(2);
+		arbol.position.set(-30+15/2,0,-30);
+
+		var arbusto = new Arbol(2);
+		arbusto.position.set(30+15/2,0,-30);
 		this.obstaculos = new Array();
-		this.obstaculos.push(this.arbol);
-		this.add(this.arbol);
+		this.obstaculos.push(arbol);
+		this.obstaculos.push(arbusto);
+		this.add(arbol);
+		this.add(arbusto);
 	}
 
 	inBounds(coord) {
 		return this.suelo.inBounds(coord);
 	}
 
-	intersect(caja_pj){
+	intersect(nueva_pos){
 		var colision = false;
-		//var caja_pj = new THREE.Box3().setFromObject(pj);
 
-		for(var i = 0; i < this.obstaculos.length; i++){
+		var caja_pj = new THREE.Box3().setFromCenterAndSize(nueva_pos, new THREE.Vector3(15/2,15/2,15/2));
+
+		for(var i = 0; i < this.obstaculos.length && !colision; i++){
 			var caja_obs = new THREE.Box3().setFromObject(this.obstaculos[i]);
 
 			colision = caja_pj.intersectsBox(caja_obs);

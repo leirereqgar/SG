@@ -255,22 +255,23 @@ class MyScene extends THREE.Scene {
 		switch(key) {
 			case 37:
 				var nueva_pos = this.model.siguientePos("LEFT");
-				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(this.model))
+				console.log(this.nivel.intersect(nueva_pos));
+				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos))
 					this.model.mover("LEFT"); //Izquierda
 			break;
 			case 38:
 				var nueva_pos = this.model.siguientePos("UP");
-				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(this.model))
+				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos))
 					this.model.mover("UP"); //Arriba
 			break;
 			case 39:
 				var nueva_pos = this.model.siguientePos("RIGHT");
-				if(this.nivel.inBounds(nueva_pos))
+				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos))
 					this.model.mover("RIGHT");// Derecha
 			break;
 			case 40:
 				var nueva_pos = this.model.siguientePos("DOWN");
-				if(this.nivel.inBounds(nueva_pos))
+				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos))
 					this.model.mover("DOWN"); // abajo
 			break;
 		}
