@@ -5,6 +5,8 @@ import { TrackballControls } from '../libs/TrackballControls.js'
 
 //PROYECTO
 import { Ornitorrinco } from './Ornitorrinco.js'
+import { Menu } from './Menu.js'
+import { Sombrero } from './Sombrero.js'
 import { Nivel } from './Nivel.js'
 
 class MyScene extends THREE.Scene {
@@ -15,7 +17,6 @@ class MyScene extends THREE.Scene {
 		// Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
 		this.renderer = this.createRenderer(myCanvas);
 
-
 		// Crear las luces
 		this.createLights ();
 
@@ -23,11 +24,44 @@ class MyScene extends THREE.Scene {
 		this.nivel = new Nivel();
 		this.add(this.nivel);
 
+		//Definimos el menú, que consiste en un plano y texto
+		this.menu = new Menu();
+		this.add (this.menu)
+		this.menu.position.y = 60;
+
+		//Definimos las opciones del menú, que son sombreros. Serán clickeables
+		this.objetos_menu = [];
+
+		this.sombrero1 = new Sombrero();
+		this.sombrero2 = new Sombrero();
+		this.sombrero3 = new Sombrero();
+
+		this.sombrero1.position.x=5;
+		this.sombrero2.position.x=20;
+		this.sombrero3.position.x=35;
+
+		this.sombrero1.position.y=45;
+		this.sombrero2.position.y=45;
+		this.sombrero3.position.y=45;
+
+
+		this.objetos_menu.push(this.sombrero1);
+		this.objetos_menu.push(this.sombrero2);
+		this.objetos_menu.push(this.sombrero3);
+
+		this.add(this.sombrero1);
+		this.add(this.sombrero2);
+		this.add(this.sombrero3);
+
+		//Definimos el modelo del ornitorrinco
 		this.model = new Ornitorrinco();
 		this.model.position.set(7.5,3.5,0);
 		this.add (this.model);
-		// Tendremos una cámara con un control de movimiento con el ratón
+
+		//Definimos varias cámaras
 		this.createCamera ();
+		this.camera_actual = 2;
+
 	}
 
 	createCamera () {
@@ -42,6 +76,12 @@ class MyScene extends THREE.Scene {
 		var look = new THREE.Vector3 (this.model.position.x, this.model.position.y + 5 , this.model.position.z + 5);
 		this.camera.lookAt(look);
 		this.add (this.camera);
+
+		//Y otra cámara para el menu
+		this.camera2 = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+		this.camera2.position.set (20,40,40);
+		this.camera2.lookAt(20,50,0);
+		this.add(this.camera2);
 
 		// Para el control de cámara usamos una clase que ya tiene implementado los movimientos de órbita
 		/*this.cameraControl = new TrackballControls (this.camera, this.renderer.domElement);
@@ -77,6 +117,12 @@ class MyScene extends THREE.Scene {
 		this.spotLight = new THREE.SpotLight( 0xffffff, 0.5);
 		this.spotLight.position.set( 60, 1000, 40 );
 		this.add (this.spotLight);
+
+		//Y otra luz focal para el menú
+		this.spotLightMenu = new THREE.SpotLight( 0xffffff, 0.5);
+		this.spotLightMenu.position.set( 0, 50, 100 );
+		this.spotLightMenu.lookAt(0,50,0);
+		this.add (this.spotLightMenu);
 	}
 
 	createRenderer (myCanvas) {
@@ -98,10 +144,25 @@ class MyScene extends THREE.Scene {
 	}
 
 	getCamera () {
-		// En principio se devuelve la única cámara que tenemos
-		// Si hubiera varias cámaras, este método decidiría qué cámara devuelve cada vez que es consultado
-		return this.camera;
+		var cam_actual;
+    switch (this.camera_actual){
+      case 1:
+        cam_actual = this.camera;
+      break;
+      case 2:
+        cam_actual = this.camera2;
+      break;
+    }
+
+    return cam_actual;
 	}
+
+	leaveMenu () {
+    this.camera_actual = 1;
+		this.activeCamera = this.camera;
+		this.renderer.render (this, this.camera);
+    this.setCameraAspect (window.innerWidth / window.innerHeight);
+  }
 
 	setCameraAspect (ratio) {
 		// Cada vez que el usuario modifica el tamaño de la ventana desde el gestor de ventanas de
@@ -120,6 +181,54 @@ class MyScene extends THREE.Scene {
 		this.renderer.setSize (window.innerWidth, window.innerHeight);
 	}
 
+	onPointerMove (event) {
+		//Definimos a dónde apunta el ratón
+		this.pointer = new THREE.Vector2();
+		this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+		this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+		//Definimos el raycaster: sirve para saber si el ratón está posado encima de un objeto que se pueda seleccionar
+		var raycaster = new THREE.Raycaster();
+		raycaster.setFromCamera(this.pointer, this.getCamera());
+		var seleccion = raycaster.intersectObjects(this.objetos_menu, true);
+
+		var seleccionado = false;
+
+		if ( seleccion.length > 0 ) {
+			if (!seleccionado){
+				seleccion[0].object.material.emissiveIntensity = 0.2;
+				seleccion[0].object.material.emissive.setHex( 0xffffff );
+			}
+
+		} else {
+			seleccionado = false;
+		}
+	}
+
+	onClick (event) {
+		//Definimos a dónde apunta el ratón
+		this.pointer = new THREE.Vector2();
+		this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+		this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+		//Definimos el raycaster: sirve para saber si el ratón está posado encima de un objeto que se pueda seleccionar
+		var raycaster = new THREE.Raycaster();
+		raycaster.setFromCamera(this.pointer, this.getCamera());
+		var seleccion = raycaster.intersectObjects(this.objetos_menu, true);
+
+		var seleccionado = false;
+
+
+
+		if ( seleccion.length > 0 ) {
+			this.leaveMenu();
+			this.remove(this.menu);
+			this.remove(this.sombrero1);
+			this.remove(this.sombrero2);
+			this.remove(this.sombrero3);
+		}
+	}
+
 	update () {
 		// Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
 		this.renderer.render (this, this.getCamera());
@@ -128,6 +237,7 @@ class MyScene extends THREE.Scene {
 		// Se actualiza la posición de la cámara según su controlador
 		//this.cameraControl.update();
 		this.cameraUpdate();
+
 
 		// Se actualiza el resto del modelo
 		this.model.update();
@@ -173,9 +283,11 @@ $(function () {
 	// Se instancia la escena pasándole el  div  que se ha creado en el html para visualizar
 	var scene = new MyScene("#WebGL-output");
 
-	// Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
+	// Se añaden los listener de la aplicación.
 	window.addEventListener ("resize", () => scene.onWindowResize());
 	window.addEventListener ("keydown", (event) => scene.onKeyDown(event));
+	window.addEventListener ("mousemove", (event) => scene.onPointerMove(event));
+	window.addEventListener ("click", (event) => scene.onClick(event));
 
 	// Que no se nos olvide, la primera visualización.
 	scene.update();
