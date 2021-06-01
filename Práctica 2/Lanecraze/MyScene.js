@@ -20,12 +20,12 @@ class MyScene extends THREE.Scene {
 		this.createLights ();
 
 
-		this.nivel = new Nivel();
-		this.add(this.nivel);
-
 		this.model = new Ornitorrinco();
 		this.model.position.set(7.5,3.5,0);
 		this.add (this.model);
+
+		this.nivel = new Nivel();
+		this.add(this.nivel);
 		// Tendremos una cámara con un control de movimiento con el ratón
 		this.createCamera ();
 	}
@@ -140,17 +140,17 @@ class MyScene extends THREE.Scene {
 
 	onKeyDown(event) {
 		var key = event.which || event.keyCode;
-		console.log(key);
+		//console.log(key);
 
 		switch(key) {
 			case 37:
 				var nueva_pos = this.model.siguientePos("LEFT");
-				if(this.nivel.inBounds(nueva_pos))
+				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(this.model))
 					this.model.mover("LEFT"); //Izquierda
 			break;
 			case 38:
 				var nueva_pos = this.model.siguientePos("UP");
-				if(this.nivel.inBounds(nueva_pos))
+				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(this.model))
 					this.model.mover("UP"); //Arriba
 			break;
 			case 39:

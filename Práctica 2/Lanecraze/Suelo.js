@@ -5,7 +5,7 @@ import {TipoSuelo} from './TipoSuelo.js'
 class Suelo extends THREE.Object3D {
 	constructor(v_gen) {
 		super();
-		this.casillas_ancho = 10;
+		this.casillas_ancho = 20;
 		this.casillas_largo = this.casillas_ancho * 3;
 		this.ancho = this.casillas_ancho * 15;
 		this.largo = this.casillas_largo * 15;
@@ -26,17 +26,17 @@ class Suelo extends THREE.Object3D {
 
 		const grass_texture = loader.load('../imgs/grass-texture.jpg');
 		grass_texture.wrapS = grass_texture.wrapT = THREE.RepeatWrapping;
-		grass_texture.repeat.set(10,1);
+		grass_texture.repeat.set(this.casillas_ancho,1);
 		this.grass_material = new THREE.MeshPhongMaterial ({map: grass_texture});
 
 		const water_texture = loader.load('../imgs/water-texture.gif');
 		water_texture.wrapS = water_texture.wrapT = THREE.RepeatWrapping;
-		water_texture.repeat.set(10,1);
+		water_texture.repeat.set(this.casillas_ancho,1);
 		this.water_material = new THREE.MeshPhongMaterial ({map: water_texture});
 
 		const road_texture = loader.load('../imgs/road-texture.jpg');
 		road_texture.wrapS = road_texture.wrapT = THREE.RepeatWrapping;
-		road_texture.repeat.set(10,1);
+		road_texture.repeat.set(this.casillas_ancho,1);
 		this.road_material = new THREE.MeshPhongMaterial ({map: road_texture});
 	}
 
