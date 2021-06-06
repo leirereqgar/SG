@@ -133,6 +133,12 @@ class Nivel extends THREE.Object3D {
 		return this.suelo.inBounds(coord);
 	}
 
+	isWater(coord) {
+		var tablero = this.suelo.getTableroVirtual();
+
+		return (tablero[Math.abs(Math.round(coord)/15)].getTipo() == 2);
+	}
+
 	intersect(nueva_pos){
 		var colision = false;
 

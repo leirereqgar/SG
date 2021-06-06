@@ -55,6 +55,10 @@ class Suelo extends THREE.Object3D {
 		}
 	}
 
+	getTableroVirtual() {
+		return this.tablero_virtual;
+	}
+
 	crearTableroFisico(){
 		this.ground = new THREE.Object3D();
 		var offset = this.largo/2;

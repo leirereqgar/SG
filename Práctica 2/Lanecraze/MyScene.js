@@ -60,6 +60,9 @@ class MyScene extends THREE.Scene {
 		this.model.position.set(7.5,3.5,0);
 		this.add (this.model);
 
+		this.axis = new THREE.AxesHelper (5);
+		this.add (this.axis);
+
 		//Definimos varias cámaras
 		this.createCamera ();
 		this.camera_actual = 2;
@@ -110,18 +113,22 @@ class MyScene extends THREE.Scene {
 		//    se hace así puesto que no va a ser accedida desde otros métodos
 		var ambientLight = new THREE.AmbientLight(0xccddee, 0.35);
 		// La añadimos a la escena
-		this.add (ambientLight);
 
 		// Se crea una luz focal que va a ser la luz principal de la escena
 		// La luz focal, además tiene una posición, y un punto de mira
 		// Si no se le da punto de mira, apuntará al (0,0,0) en coordenadas del mundo
 		// En este caso se declara como   this.atributo   para que sea un atributo accesible desde otros métodos.
-		this.spotLight = new THREE.SpotLight( 0xffffff, 0.5);
-		this.spotLight.position.set( 60, 1000, 40 );
-		this.add (this.spotLight);
+		this.luz_nivel_1 = new THREE.SpotLight( 0xffffff, 1);
+		this.luz_nivel_1.position.set( 60, 1000, 40 );
+
+		this.luz_nivel_2 = new THREE.SpotLight( 0xfcba03, 0.5);
+		this.luz_nivel_2.position.set( 60, 1000, 40 );
+
+		this.luz_nivel_3 = new THREE.SpotLight( 0x0044b3, 0.5);
+		this.luz_nivel_3.position.set( 60, 1000, 40 );
 
 		//Y otra luz focal para el menú
-		this.spotLightMenu = new THREE.SpotLight( 0xffffff, 0.5);
+		this.spotLightMenu = new THREE.SpotLight( 0xffffff, 0.7);
 		this.spotLightMenu.position.set( 0, 50, 100 );
 		this.spotLightMenu.lookAt(0,50,0);
 		this.add (this.spotLightMenu);
@@ -228,6 +235,24 @@ class MyScene extends THREE.Scene {
 			this.remove(this.sombrero1);
 			this.remove(this.sombrero2);
 			this.remove(this.sombrero3);
+
+			var obj = seleccion[0].point;
+
+			if(obj.x > this.sombrero1.position.x-this.sombrero1.getAnchura() &&
+			        obj.x < this.sombrero1.position.x+this.sombrero1.getAnchura()){
+				console.log("sombrero 1")
+				this.add(luz_nivel_1);
+			}
+			else if(obj.x > this.sombrero2.position.x-this.sombrero2.getAnchura() &&
+			        obj.x < this.sombrero2.position.x+this.sombrero2.getAnchura()){
+				console.log("sombrero 2")
+				this.add(luz_nivel_2);
+			}
+			else if(obj.x > this.sombrero3.position.x-this.sombrero3.getAnchura() &&
+			        obj.x < this.sombrero3.position.x+this.sombrero3.getAnchura()){
+				console.log("sombrero 3")
+				this.add(luz_nivel_3);
+			}
 		}
 	}
 
@@ -257,13 +282,12 @@ class MyScene extends THREE.Scene {
 		switch(key) {
 			case 37:
 				var nueva_pos = this.model.siguientePos("LEFT");
-				console.log(this.nivel.intersect(nueva_pos));
 				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos))
 					this.model.mover("LEFT"); //Izquierda
 			break;
 			case 38:
 				var nueva_pos = this.model.siguientePos("UP");
-				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos))
+				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
 					this.model.mover("UP"); //Arriba
 			break;
 			case 39:
