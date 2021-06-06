@@ -5,7 +5,7 @@ import {TipoSuelo} from './TipoSuelo.js'
 class Suelo extends THREE.Object3D {
 	constructor(v_gen) {
 		super();
-		this.casillas_ancho = 20;
+		this.casillas_ancho = 10;
 		this.casillas_largo = this.casillas_ancho * 3;
 		this.ancho = this.casillas_ancho * 15;
 		this.largo = this.casillas_largo * 15;
