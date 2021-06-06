@@ -7,6 +7,9 @@ import { TrackballControls } from '../libs/TrackballControls.js'
 import { Ornitorrinco } from './Ornitorrinco.js'
 import { Menu } from './Menu.js'
 import { Sombrero } from './Sombrero.js'
+import { Arbol } from './Arbol.js'
+import { Nenufar } from './Nenufar.js'
+import { Coche } from './Coche.js'
 import { Nivel } from './Nivel.js'
 
 class MyScene extends THREE.Scene {
@@ -19,7 +22,6 @@ class MyScene extends THREE.Scene {
 
 		// Crear las luces
 		this.createLights ();
-
 
 		this.nivel = new Nivel();
 		this.add(this.nivel);
