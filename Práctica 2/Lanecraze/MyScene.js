@@ -112,12 +112,9 @@ class MyScene extends THREE.Scene {
 		var ambientLight = new THREE.AmbientLight(0xccddee, 0.35);
 		// La añadimos a la escena
 
-		// Se crea una luz focal que va a ser la luz principal de la escena
-		// La luz focal, además tiene una posición, y un punto de mira
-		// Si no se le da punto de mira, apuntará al (0,0,0) en coordenadas del mundo
-		// En este caso se declara como   this.atributo   para que sea un atributo accesible desde otros métodos.
 		this.luz_nivel_1 = new THREE.SpotLight( 0xffffff, 1);
 		this.luz_nivel_1.position.set( 60, 1000, 40 );
+		this.spotLightMenu.lookAt(0,0,-10);
 
 		this.luz_nivel_2 = new THREE.SpotLight( 0xfcba03, 0.5);
 		this.luz_nivel_2.position.set( 60, 1000, 40 );
