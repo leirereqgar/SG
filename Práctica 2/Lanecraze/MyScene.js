@@ -261,7 +261,8 @@ class MyScene extends THREE.Scene {
 			break;
 			case 38:
 				var nueva_pos = this.model.siguientePos("UP");
-				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos))
+				console.log(nueva_pos)
+				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
 					this.model.mover("UP"); //Arriba
 			break;
 			case 39:
