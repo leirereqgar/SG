@@ -45,7 +45,7 @@ class Nivel extends THREE.Object3D {
 	isWater(coord) {
 		var tablero = this.suelo.getTableroVirtual();
 
-		return (tablero[Math.abs(coord/15)].getTipo() == 2);
+		return (tablero[Math.abs(Math.round(coord)/15)].getTipo() == 2);
 	}
 
 	intersect(nueva_pos){

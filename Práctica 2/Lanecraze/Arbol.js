@@ -30,7 +30,8 @@ class Arbol extends THREE.Object3D {
 		const leaves_texture = loader.load('../imgs/leaves-texture.png');
 		leaves_texture.wrapS = leaves_texture.wrapT = THREE.RepeatWrapping;
 		leaves_texture.repeat.set(1,this.altura);
-		this.leaves_material = new THREE.MeshPhongMaterial ({map: leaves_texture});
+		this.leaves_material = new THREE.MeshPhongMaterial ({map: leaves_texture,transparent: true});
+		this.leaves_matrial
 	}
 }
 
