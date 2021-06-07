@@ -75,7 +75,7 @@ class MyScene extends THREE.Scene {
 		//   Los planos de recorte cercano y lejano
 		this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 		// También se indica dónde se coloca
-		this.camera.position.set (this.model.position.x+10, this.model.position.y + 40 , this.model.position.z + 50);
+		this.camera.position.set (this.model.position.x+10, this.model.position.y + 75 , this.model.position.z + 45);
 		// Y hacia dónde mira
 		var look = new THREE.Vector3 (this.model.position.x, this.model.position.y + 5 , this.model.position.z + 5);
 		this.camera.lookAt(look);
@@ -83,7 +83,7 @@ class MyScene extends THREE.Scene {
 
 		//Y otra cámara para el menu
 		this.camera2 = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-		this.camera2.position.set (20,40,40);
+		this.camera2.position.set (20,40,35);
 		this.camera2.lookAt(20,50,0);
 		this.add(this.camera2);
 
@@ -100,8 +100,10 @@ class MyScene extends THREE.Scene {
 	}
 
 	cameraUpdate() {
-		this.camera.position.set (this.model.position.x+10, this.model.position.y + 40 , this.model.position.z + 50);
-		var look = new THREE.Vector3 (this.model.position.x, this.model.position.y + 5 , this.model.position.z + 5);
+		this.camera.position.z -= 0.3;
+
+//		this.camera.position.set (this.model.position.x+10, this.model.position.y + 40 , this.model.position.z + 50);
+		var look = new THREE.Vector3 (this.camera.position.x - 15, this.camera.position.y - 50 , this.camera.position.z - 40);
 		this.camera.lookAt(look);
 	}
 
@@ -206,13 +208,7 @@ class MyScene extends THREE.Scene {
 		var seleccionado = false;
 
 		if ( seleccion.length > 0 ) {
-			if (!seleccionado){
-				seleccion[0].object.material.emissiveIntensity = 0.2;
-				seleccion[0].object.material.emissive.setHex( 0xffffff );
-			}
-
-		} else {
-			seleccionado = false;
+				seleccion[0].object.rotation.y += 0.2;
 		}
 	}
 
