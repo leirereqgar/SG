@@ -18,19 +18,17 @@ class Sombrero extends THREE.Object3D {
 				this.crearSombreroCopa();
 			break;
 		}
-
-		this.add(this.sombrero);
 	}
 
 	crearFedora(){
 		const obj_loader = new OBJLoader();
 		const mtl_loader = new MTLLoader();
 
-		mtl_loader.load('../models/fedora/fedora.mtl', (mtl)=>{
+		mtl_loader.load('../models/basico/fedora.mtl', (mtl)=>{
 			mtl.preload();
 			obj_loader.setMaterials(mtl);
-			obj_loader.load('../models/fedora/fedora.obj', (root) =>{
-				root.scale.set(4,4,4);
+			obj_loader.load('../models/basico/fedora.obj', (root) =>{
+				root.scale.set(2,2,2);
 				root.translateY(1);
 				this.add(root);
 			});

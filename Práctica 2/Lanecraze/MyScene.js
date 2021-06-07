@@ -63,7 +63,7 @@ class MyScene extends THREE.Scene {
 		this.add(this.sombrero2);
 		this.add(this.sombrero3);
 
-		//Definimos el modelo del ornifedoratorrinco
+		//Definimos el modelo del ornitorrinco
 		this.model = new Ornitorrinco();
 		this.model.position.set(7.5,3.5,0);
 		this.add (this.model);
@@ -329,6 +329,7 @@ class MyScene extends THREE.Scene {
 		this.model.update();
 
 		this.muerteCamara();
+		this.muerteCoche();
 
 		if(this.nivel != null){
 			this.nivel.update();
@@ -372,6 +373,11 @@ class MyScene extends THREE.Scene {
 		if(z_camara-z_modelo < -15){
 			this.muerte();
 		}
+	}
+
+	muerteCoche() {
+		if(this.nivel!=null && this.nivel.colisionCoche(this.model.position))
+			this.muerte();
 	}
 
 	muerte() {
