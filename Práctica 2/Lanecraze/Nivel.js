@@ -9,20 +9,13 @@ import { Arbol } from './Arbol.js'
 import { Nenufar } from './Nenufar.js'
 import { Coche } from './Coche.js'
 import { Ornitorrinco } from './Ornitorrinco.js'
+import { Sombrero } from './Sombrero.js'
 
 class Nivel extends THREE.Object3D {
-	constructor() {
+	constructor(v_gen) {
 		super();
 
 		//Vector de generación para el suelo del tablero
-		var v_gen = new Array(7);
-		v_gen[0] = new THREE.Vector2(5,0);
-		v_gen[1] = new THREE.Vector2(2,1);
-		v_gen[2] = new THREE.Vector2(5,2);
-		v_gen[3] = new THREE.Vector2(3,0);
-		v_gen[4] = new THREE.Vector2(1,1);
-		v_gen[5] = new THREE.Vector2(1,2);
-		v_gen[6] = new THREE.Vector2(13,0);
 
 		this.suelo = new Suelo(v_gen);
 		this.suelo.position.set(0,0, -this.suelo.getLargo()/2);
@@ -50,11 +43,17 @@ class Nivel extends THREE.Object3D {
 			this.obstaculos.push(this.arbustos[l]);
 		}
 
+		//console.log(this.obstaculos)
+
 
 		/*this.obstaculos.push(arbol);
 		this.obstaculos.push(arbusto);
 		this.add(arbol);
 		this.add(arbusto);*/
+
+		this.sombrero = new Sombrero();
+		this.sombrero.position.set(this.sombrero.getAnchura()/2+7.5, 3, -this.suelo.getLargo()+30);
+		this.add(this.sombrero);
 
 	}
 
@@ -94,7 +93,7 @@ class Nivel extends THREE.Object3D {
 		tablero = this.suelo.getTableroVirtual();
 
 
-		for(var i=2; i<this.largo; i++){
+		for(var i=2; i<this.largo-3; i++){
 			if(tablero[i].getTipo() == 0){
 				//Se define el número de obstáculos permitidos en cada fila: un 10% de las casillas de la fila, mas o menos 1.
 				//El | 0 se añade para que quede un número entero.
@@ -138,21 +137,34 @@ class Nivel extends THREE.Object3D {
 	isWater(coord) {
 		var tablero = this.suelo.getTableroVirtual();
 
-		return (tablero[Math.abs(Math.round(coord)/15)].getTipo() == 2);
+		return (tablero[Math.abs(Math.round(coord)/this.suelo.getBloque())].getTipo() == 2);
 	}
 
 	intersect(nueva_pos){
 		var colision = false;
 
-		var caja_pj = new THREE.Box3().setFromCenterAndSize(nueva_pos, new THREE.Vector3(15/2,15/2,15/2));
+		var caja_pj = new THREE.Box3().setFromCenterAndSize(nueva_pos,
+			                  new THREE.Vector3(15/2,15/2,15/2));
 
 		for(var i = 0; i < this.obstaculos.length && !colision; i++){
+			//console.log(this.obstaculos[i].position)
 			var caja_obs = new THREE.Box3().setFromObject(this.obstaculos[i]);
 
 			colision = caja_pj.intersectsBox(caja_obs);
 		}
 
+		//console.log(colision)
+
 		return colision;
+	}
+
+	meta(pj) {
+		var caja_pj = new THREE.Box3().setFromObject(pj);
+		var caja_sombrero = new THREE.Box3().setFromObject(this.sombrero);
+		//console.log(caja_sombrero)
+		//console.log(caja_pj)
+
+		return caja_pj.intersectsBox(caja_sombrero);
 	}
 }
 

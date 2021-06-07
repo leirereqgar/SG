@@ -104,6 +104,10 @@ class Suelo extends THREE.Object3D {
 		return this.largo;
 	}
 
+	getBloque() {
+		return this.bloque;
+	}
+
 	inBounds(coord) {
 		var in_bounds = true;
 

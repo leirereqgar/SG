@@ -21,12 +21,12 @@ class MyScene extends THREE.Scene {
 		this.createLights ();
 
 
-		this.nivel = new Nivel();
-		this.add(this.nivel);
+		//this.nivel = new Nivel();
+		//this.add(this.nivel);
 
 		//Definimos el menú, que consiste en un plano y texto
 		this.menu = new Menu();
-		this.add (this.menu)
+		this.add (this.menu);
 		this.menu.position.y = 60;
 
 		//Definimos las opciones del menú, que son sombreros. Serán clickeables
@@ -155,6 +155,18 @@ class MyScene extends THREE.Scene {
 		return cam_actual;
 	}
 
+	putMenu () {
+		this.camera_actual = 2;
+		this.activeCamera = this.camera;
+		this.renderer.render(this, this.camera);
+		this.setCameraAspect(window.innerWidth / window.innerHeight);
+
+		this.add(this.menu);
+		this.add(this.sombrero1);
+		this.add(this.sombrero2);
+		this.add(this.sombrero3);
+	}
+
 	leaveMenu () {
 		this.camera_actual = 1;
 		this.activeCamera = this.camera;
@@ -231,17 +243,59 @@ class MyScene extends THREE.Scene {
 			        obj.x < this.sombrero1.position.x+this.sombrero1.getAnchura()){
 				//console.log("sombrero 1")
 				this.spotLight.intensity = 0.7;
+				var v_gen = new Array(10);
+				v_gen[0] = new THREE.Vector2(5,0);
+				v_gen[1] = new THREE.Vector2(2,1);
+				v_gen[2] = new THREE.Vector2(5,2);
+				v_gen[3] = new THREE.Vector2(3,0);
+				v_gen[4] = new THREE.Vector2(1,1);
+				v_gen[5] = new THREE.Vector2(1,2);
+				v_gen[6] = new THREE.Vector2(1,0);
+				v_gen[7] = new THREE.Vector2(5,1);
+				v_gen[8] = new THREE.Vector2(2,2);
+				v_gen[9] = new THREE.Vector2(5,0);
+
+				this.nivel = new Nivel(v_gen);
+				this.add(this.nivel);
 			}
 			else if(obj.x > this.sombrero2.position.x-this.sombrero2.getAnchura() &&
 			        obj.x < this.sombrero2.position.x+this.sombrero2.getAnchura()){
 				//console.log("sombrero 2")
 				this.spotLight.color.setHex(0xffe878);
 				this.spotLight.intensity = 0.5;
+
+				var v_gen = new Array(8);
+				v_gen[0] = new THREE.Vector2(5,0);
+				v_gen[1] = new THREE.Vector2(4,2);
+				v_gen[2] = new THREE.Vector2(3,1);
+				v_gen[3] = new THREE.Vector2(3,0);
+				v_gen[4] = new THREE.Vector2(4,1);
+				v_gen[5] = new THREE.Vector2(3,2);
+				v_gen[6] = new THREE.Vector2(3,1);
+				v_gen[7] = new THREE.Vector2(5,0);
+
+				this.nivel = new Nivel(v_gen);
+				this.add(this.nivel);
 			}
 			else if(obj.x > this.sombrero3.position.x-this.sombrero3.getAnchura() &&
 			        obj.x < this.sombrero3.position.x+this.sombrero3.getAnchura()){
 				//console.log("sombrero 3")
 				this.spotLight.intensity = 0.25;
+
+				var v_gen = new Array(10);
+				v_gen[0] = new THREE.Vector2(5,0);
+				v_gen[1] = new THREE.Vector2(2,1);
+				v_gen[2] = new THREE.Vector2(5,2);
+				v_gen[3] = new THREE.Vector2(3,0);
+				v_gen[4] = new THREE.Vector2(1,1);
+				v_gen[5] = new THREE.Vector2(1,2);
+				v_gen[6] = new THREE.Vector2(1,0);
+				v_gen[7] = new THREE.Vector2(5,1);
+				v_gen[8] = new THREE.Vector2(2,2);
+				v_gen[9] = new THREE.Vector2(5,0);
+
+				this.nivel = new Nivel(v_gen);
+				this.add(this.nivel);
 			}
 		}
 	}
@@ -274,21 +328,54 @@ class MyScene extends THREE.Scene {
 				var nueva_pos = this.model.siguientePos("LEFT");
 				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
 					this.model.mover("LEFT"); //Izquierda
+
+				if(this.nivel.meta(this.model)){
+					this.putMenu();
+					this.model.position.set(7.5,3.5,0);
+					this.add (this.model);
+					this.remove(this.nivel);
+					this.nivel = null;
+				}
 			break;
 			case 38:
 				var nueva_pos = this.model.siguientePos("UP");
 				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
 					this.model.mover("UP"); //Arriba
+
+				//console.log(this.nivel.meta(this.model))
+				if(this.nivel.meta(this.model)){
+					this.putMenu();
+					this.model.position.set(7.5,3.5,0);
+					this.add (this.model);
+					this.remove(this.nivel);
+					this.nivel = null;
+				}
 			break;
 			case 39:
 				var nueva_pos = this.model.siguientePos("RIGHT");
 				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
 					this.model.mover("RIGHT");// Derecha
+
+				if(this.nivel.meta(this.model)){
+					this.putMenu();
+					this.model.position.set(7.5,3.5,0);
+					this.add (this.model);
+					this.remove(this.nivel);
+					this.nivel = null;
+				}
 			break;
 			case 40:
 				var nueva_pos = this.model.siguientePos("DOWN");
 				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
 					this.model.mover("DOWN"); // abajo
+
+				if(this.nivel.meta(this.model)){
+					this.putMenu();
+					this.model.position.set(7.5,3.5,0);
+					this.add (this.model);
+					this.remove(this.nivel);
+					this.nivel = null;
+				}
 			break;
 		}
 	}
