@@ -59,8 +59,8 @@ class MyScene extends THREE.Scene {
 		this.model.position.set(7.5,3.5,0);
 		this.add (this.model);
 
-		this.axis = new THREE.AxesHelper (5);
-		this.add (this.axis);
+		//this.axis = new THREE.AxesHelper (5);
+		//this.add (this.axis);
 
 		//Definimos varias cámaras
 		this.createCamera ();
@@ -256,7 +256,7 @@ class MyScene extends THREE.Scene {
 				v_gen[8] = new THREE.Vector2(2,2);
 				v_gen[9] = new THREE.Vector2(5,0);
 
-				this.nivel = new Nivel(v_gen);
+				this.nivel = new Nivel(v_gen, "fedora");
 				this.add(this.nivel);
 			}
 			else if(obj.x > this.sombrero2.position.x-this.sombrero2.getAnchura() &&
@@ -275,7 +275,7 @@ class MyScene extends THREE.Scene {
 				v_gen[6] = new THREE.Vector2(3,1);
 				v_gen[7] = new THREE.Vector2(5,0);
 
-				this.nivel = new Nivel(v_gen);
+				this.nivel = new Nivel(v_gen, "gorra");
 				this.add(this.nivel);
 			}
 			else if(obj.x > this.sombrero3.position.x-this.sombrero3.getAnchura() &&
@@ -295,7 +295,7 @@ class MyScene extends THREE.Scene {
 				v_gen[8] = new THREE.Vector2(2,2);
 				v_gen[9] = new THREE.Vector2(5,0);
 
-				this.nivel = new NivelNoche(v_gen);
+				this.nivel = new NivelNoche(v_gen, "sombrero_copa");
 				this.add(this.nivel);
 			}
 		}

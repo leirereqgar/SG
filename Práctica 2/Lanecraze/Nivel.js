@@ -13,7 +13,7 @@ import { Sombrero } from './Sombrero.js'
 import { Farola } from './Farola.js'
 
 class Nivel extends THREE.Object3D {
-	constructor(v_gen) {
+	constructor(v_gen, sombrero) {
 		super();
 
 		//Vector de generación para el suelo del tablero
@@ -53,7 +53,7 @@ class Nivel extends THREE.Object3D {
 		this.add(arbol);
 		this.add(arbusto);*/
 
-		this.sombrero = new Sombrero("fedora");
+		this.sombrero = new Sombrero(sombrero);
 		this.sombrero.position.set(this.sombrero.getAnchura()/2+7.5, 3, -this.suelo.getLargo()+30);
 		this.add(this.sombrero);
 

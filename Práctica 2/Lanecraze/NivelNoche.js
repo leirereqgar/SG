@@ -9,15 +9,10 @@ import { Sombrero } from './Sombrero.js'
 import { Nivel } from './Nivel.js'
 
 class NivelNoche extends Nivel {
-	constructor(v_gen) {
-		super(v_gen);
+	constructor(v_gen, sombrero) {
+		super(v_gen,sombrero);
 
 		this.crearFarolas();
-
-		this.sombrero = new Sombrero("sombrero_copa");
-		this.sombrero.position.set(this.sombrero.getAnchura()/2+7.5, 3, -this.suelo.getLargo()+30);
-		this.add(this.sombrero);
-
 	}
 
 	crearFarolas() {

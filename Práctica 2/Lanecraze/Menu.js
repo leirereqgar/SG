@@ -15,7 +15,7 @@ class Menu extends THREE.Object3D {
 
 	crearMateriales(){
 		this.blanco  = new THREE.MeshPhongMaterial({color:0xffffff});
-		this.azul		 = new THREE.MeshPhongMaterial({color:0x5edcff});
+		this.azul = new THREE.MeshPhongMaterial({color:0x5edcff});
 	}
 
 	crearFondo(){
