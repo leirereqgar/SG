@@ -10,6 +10,7 @@ import { Nenufar } from './Nenufar.js'
 import { Coche } from './Coche.js'
 import { Ornitorrinco } from './Ornitorrinco.js'
 import { Sombrero } from './Sombrero.js'
+import { Farola } from './Farola.js'
 
 class Nivel extends THREE.Object3D {
 	constructor(v_gen) {
@@ -54,6 +55,9 @@ class Nivel extends THREE.Object3D {
 		this.sombrero = new Sombrero();
 		this.sombrero.position.set(this.sombrero.getAnchura()/2+7.5, 3, -this.suelo.getLargo()+30);
 		this.add(this.sombrero);
+
+		//this.farola = new Farola();
+		//this.add(this.farola)
 
 	}
 
