@@ -312,6 +312,9 @@ class MyScene extends THREE.Scene {
 
 		// Se actualiza el resto del modelo
 		this.model.update();
+		if(this.nivel != null){
+			this.nivel.update();
+		}
 
 		// Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
 		// Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".
