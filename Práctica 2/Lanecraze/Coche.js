@@ -5,26 +5,27 @@ class Coche extends THREE.Object3D {
 		super();
 
 		this.largo = largo;
+		this.velocidad = Math.random();
 
 		this.crearMateriales();
 
-		var geom_cabina = new THREE.BoxGeometry(15,7.5,14);
+		var geom_cabina = new THREE.BoxGeometry(14,7.5,14);
 		var cabina = new THREE.Mesh(geom_cabina, this.blanco);
 
 		var geom_coche = new THREE.BoxGeometry(this.largo*15,7.5,15);
 		var coche = new THREE.Mesh(geom_coche, this.escogerColor());
 
-		var geom_ruedas = new THREE.CylinderGeometry(3.25,3.25,14,32);
+		var geom_ruedas = new THREE.CylinderGeometry(2,2,16,32);
 		var rueda1 = new THREE.Mesh(geom_ruedas, this.negro);
 		var rueda2 = new THREE.Mesh(geom_ruedas, this.negro);
 
 		rueda1.rotateX(Math.PI/2);
 		rueda2.rotateX(Math.PI/2);
 
-		cabina.position.set(0,20,0);
-		coche.position.set(0,15,0);
-		rueda1.position.set(this.largo*15/3,7.5,0);
-		rueda2.position.set(-this.largo*15/3,7.5,0);
+		cabina.position.set(0,7.5,0);
+		coche.position.set(0,5,0);
+		rueda1.position.set(this.largo*15/3,1.5,0);
+		rueda2.position.set(-this.largo*15/3,1.5,0);
 
 		this.ruedas = new THREE.Object3D();
 
@@ -51,6 +52,14 @@ class Coche extends THREE.Object3D {
 		const random = Math.floor(Math.random() * colores.length);
 
 		return colores[random];
+	}
+
+	getVelocidad(){
+		return this.velocidad;
+	}
+
+	getLargo(){
+		return this.largo;
 	}
 }
 

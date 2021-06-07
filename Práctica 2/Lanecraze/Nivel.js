@@ -1,5 +1,6 @@
 // BIBLIOTECAS
 import * as THREE from '../libs/three.module.js'
+import * as TWEEN from '../libs/tween.esm.js'
 import { GUI } from '../libs/dat.gui.module.js'
 import { TrackballControls } from '../libs/TrackballControls.js'
 
@@ -34,6 +35,7 @@ class Nivel extends THREE.Object3D {
 
 		this.generaArboles();
 		this.generaNenufares();
+		this.generaCoches();
 
 		this.obstaculos = new Array();
 
@@ -131,9 +133,39 @@ class Nivel extends THREE.Object3D {
 		}
 	}
 
-	/*generaCoches(){
+	generaCoches(){
+		this.coches = [];
+		this.num_coches = 0;
 
-	}*/
+		var that = this;
+
+		var tablero = [];
+		tablero = this.suelo.getTableroVirtual();
+
+		for(var i=2; i<this.largo-3; i++){
+			if(tablero[i].getTipo() == 1){
+
+				var direccion = (Math.random() < 0.5 ? "IZDA" : "DCHA");
+
+				this.coches[this.num_coches] = new Coche(Math.random() < 0.5 ? 1 : 2);
+
+				if(direccion == "IZDA"){
+					this.coches[this.num_coches].position.x = -4 * (this.block) - (this.block/2);
+				}
+
+				if(direccion == "DCHA"){
+					this.coches[this.num_coches].position.x = 4 * (this.block) - (this.block/2);
+				}
+
+					this.coches[this.num_coches].position.z = -i*(this.block);
+
+				this.add(this.coches[this.num_coches]);
+
+				this.num_coches++;
+
+			}
+		}
+	}
 
 	generaNenufares() {
 		this.nenufares = [];
@@ -216,6 +248,22 @@ class Nivel extends THREE.Object3D {
 		//console.log(caja_pj)
 
 		return caja_pj.intersectsBox(caja_sombrero);
+	}
+
+	update(){
+		for(var i=0; i<this.num_coches; i++){
+			var velocidad = 1 / this.coches[i].getLargo();
+			var bonus = this.coches[i].getVelocidad();
+
+			this.coches[i].position.x = Math.sin(Date.now() * 0.001 * velocidad + bonus) * Math.PI * 20;
+
+		/*	if(this.coches[i].position.x <= this.ancho * this.block){
+				this.coches[i].position.x += 1;
+			} else{
+				this.coches[i].position.x -= 1;
+			}*/
+
+		}
 	}
 }
 
