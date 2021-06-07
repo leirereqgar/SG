@@ -53,7 +53,7 @@ class Nivel extends THREE.Object3D {
 		this.add(arbol);
 		this.add(arbusto);*/
 
-		this.sombrero = new Sombrero();
+		this.sombrero = new Sombrero("fedora");
 		this.sombrero.position.set(this.sombrero.getAnchura()/2+7.5, 3, -this.suelo.getLargo()+30);
 		this.add(this.sombrero);
 
@@ -139,16 +139,11 @@ class Nivel extends THREE.Object3D {
 		this.nenufares = [];
 		this.num_nenufares = 0;
 
-		let nenufares_transitables = [];
-		let nenufares_actuales = [];
-
 		var tablero = this.suelo.getTableroVirtual();
 
 
 		for(var i=4; i<this.largo-5; i++){
 			if(tablero[i].getTipo() == 2){
-				if (tablero[i-1] != 2)
-					nenufares_transitables = nenufares_actuales = []
 
 				const num_nenufares_actuales = Math.random() * (9 - 6) + 6;
  				// var num_obstaculos = ((this.ancho * 0.2) | 0) + (Math.random() < 0.5 ? 0 : 1);

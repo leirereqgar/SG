@@ -33,9 +33,9 @@ class MyScene extends THREE.Scene {
 		//Definimos las opciones del menú, que son sombreros. Serán clickeables
 		this.objetos_menu = [];
 
-		this.sombrero1 = new Sombrero();
-		this.sombrero2 = new Sombrero();
-		this.sombrero3 = new Sombrero();
+		this.sombrero1 = new Sombrero("fedora");
+		this.sombrero2 = new Sombrero("gorra");
+		this.sombrero3 = new Sombrero("sombrero_copa");
 
 		this.sombrero1.position.x=5;
 		this.sombrero2.position.x=20;
@@ -54,7 +54,7 @@ class MyScene extends THREE.Scene {
 		this.add(this.sombrero2);
 		this.add(this.sombrero3);
 
-		//Definimos el modelo del ornitorrinco
+		//Definimos el modelo del ornifedoratorrinco
 		this.model = new Ornitorrinco();
 		this.model.position.set(7.5,3.5,0);
 		this.add (this.model);
