@@ -309,6 +309,9 @@ class MyScene extends THREE.Scene {
 
 		// Se actualiza el resto del modelo
 		this.model.update();
+
+		this.muerteCamara();
+
 		if(this.nivel != null){
 			this.nivel.update();
 		}
@@ -338,6 +341,28 @@ class MyScene extends THREE.Scene {
 		}
 
 		return final;
+	}
+
+	muerteCamara(){
+		var z_modelo = this.model.position.z;
+		var z_camara = this.camera.position.z;
+
+		if(z_camara-z_modelo < -15){
+			this.muerte();
+		}
+	}
+
+	muerte() {
+			this.putMenu();
+			this.model.position.set(7.5,3.5,0);
+			this.add (this.model);
+			this.remove(this.nivel);
+			this.nivel = null;
+
+			this.camera.position.set (this.model.position.x+10, this.model.position.y + 75 , this.model.position.z + 45);
+			var look = new THREE.Vector3 (this.model.position.x, this.model.position.y + 5 , this.model.position.z + 5);
+			this.camera.lookAt(look);
+			this.add (this.camera);
 	}
 
 	onKeyDown(event) {
