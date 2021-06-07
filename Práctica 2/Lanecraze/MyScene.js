@@ -54,7 +54,7 @@ class MyScene extends THREE.Scene {
 		this.add(this.sombrero2);
 		this.add(this.sombrero3);
 
-		//Definimos el modelo del ornifedoratorrinco
+		//Definimos el modelo del ornitorrinco
 		this.model = new Ornitorrinco();
 		this.model.position.set(7.5,3.5,0);
 		this.add (this.model);

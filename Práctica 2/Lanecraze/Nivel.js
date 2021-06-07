@@ -255,7 +255,7 @@ class Nivel extends THREE.Object3D {
 			var caja_pj = new THREE.Box3().setFromCenterAndSize(pos,
 				                  new THREE.Vector3(15/2,15/2,15/2));
 
-			for(var i = 0; i < 10 && !colision; i++){
+			for(var i = 0; i < this.coches.length && !colision; i++){
 				var caja_obs = new THREE.Box3().setFromObject(this.coches[i]);
 				colision = caja_pj.intersectsBox(caja_obs);
 			}
