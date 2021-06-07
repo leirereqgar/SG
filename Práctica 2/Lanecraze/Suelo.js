@@ -109,13 +109,14 @@ class Suelo extends THREE.Object3D {
 		/*Está fuera del borde si se pasa this.ancho/2 a la derecha o izquierda porque
 		el tablero está centrado a lo ancho en el origen
 		*/
+
 		if(coord.x < -this.ancho/2 || coord.x > this.ancho/2)
 			in_bounds = false;
 
 		/* Estará fuera del tablero si coord.z es mayor que 0, porque vamos en sentido del ejeZ negativo
 		o si coord.z es menor que this.largo, porque matemáticas
 		*/
-		if (coord.z > 0 || coord.z < -this.largo)
+		if (Math.round(coord.z) > 0 || Math.round(coord.z) < -this.largo+15)
 			in_bounds = false;
 
 		return in_bounds;

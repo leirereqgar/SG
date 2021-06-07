@@ -229,18 +229,18 @@ class MyScene extends THREE.Scene {
 
 			if(obj.x > this.sombrero1.position.x-this.sombrero1.getAnchura() &&
 			        obj.x < this.sombrero1.position.x+this.sombrero1.getAnchura()){
-				console.log("sombrero 1")
+				//console.log("sombrero 1")
 				this.spotLight.intensity = 0.7;
 			}
 			else if(obj.x > this.sombrero2.position.x-this.sombrero2.getAnchura() &&
 			        obj.x < this.sombrero2.position.x+this.sombrero2.getAnchura()){
-				console.log("sombrero 2")
+				//console.log("sombrero 2")
 				this.spotLight.color.setHex(0xffe878);
 				this.spotLight.intensity = 0.5;
 			}
 			else if(obj.x > this.sombrero3.position.x-this.sombrero3.getAnchura() &&
 			        obj.x < this.sombrero3.position.x+this.sombrero3.getAnchura()){
-				console.log("sombrero 3")
+				//console.log("sombrero 3")
 				this.spotLight.intensity = 0.25;
 			}
 		}
@@ -272,22 +272,22 @@ class MyScene extends THREE.Scene {
 		switch(key) {
 			case 37:
 				var nueva_pos = this.model.siguientePos("LEFT");
-				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos))
+				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
 					this.model.mover("LEFT"); //Izquierda
 			break;
 			case 38:
 				var nueva_pos = this.model.siguientePos("UP");
-				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos))
+				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
 					this.model.mover("UP"); //Arriba
 			break;
 			case 39:
 				var nueva_pos = this.model.siguientePos("RIGHT");
-				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos))
+				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
 					this.model.mover("RIGHT");// Derecha
 			break;
 			case 40:
 				var nueva_pos = this.model.siguientePos("DOWN");
-				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos))
+				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
 					this.model.mover("DOWN"); // abajo
 			break;
 		}

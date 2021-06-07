@@ -68,7 +68,7 @@ class Nivel extends THREE.Object3D {
 		var ancho_bloques = (this.ancho/2) - 1;
 
 		var num_aleatorio = Math.round(Math.random() * (ancho_bloques - (ancho_bloques*-1)) + (ancho_bloques*-1));
-		console.log(num_aleatorio);
+		//console.log(num_aleatorio);
 		var posicion = num_aleatorio * (this.block) - (this.block/2);
 
 		/*if(num_aleatorio == -5){
@@ -135,11 +135,11 @@ class Nivel extends THREE.Object3D {
 		return this.suelo.inBounds(coord);
 	}
 
-	/*isWater(coord) {
+	isWater(coord) {
 		var tablero = this.suelo.getTableroVirtual();
 
 		return (tablero[Math.abs(Math.round(coord)/15)].getTipo() == 2);
-	}*/
+	}
 
 	intersect(nueva_pos){
 		var colision = false;
