@@ -7,9 +7,6 @@ import { TrackballControls } from '../libs/TrackballControls.js'
 import { Ornitorrinco } from './Ornitorrinco.js'
 import { Menu } from './Menu.js'
 import { Sombrero } from './Sombrero.js'
-import { Arbol } from './Arbol.js'
-import { Nenufar } from './Nenufar.js'
-import { Coche } from './Coche.js'
 import { Nivel } from './Nivel.js'
 
 class MyScene extends THREE.Scene {
@@ -22,6 +19,7 @@ class MyScene extends THREE.Scene {
 
 		// Crear las luces
 		this.createLights ();
+
 
 		this.nivel = new Nivel();
 		this.add(this.nivel);
@@ -114,18 +112,9 @@ class MyScene extends THREE.Scene {
 		var ambientLight = new THREE.AmbientLight(0xccddee, 0.35);
 		// La añadimos a la escena
 
-		// Se crea una luz focal que va a ser la luz principal de la escena
-		// La luz focal, además tiene una posición, y un punto de mira
-		// Si no se le da punto de mira, apuntará al (0,0,0) en coordenadas del mundo
-		// En este caso se declara como   this.atributo   para que sea un atributo accesible desde otros métodos.
-		this.luz_nivel_1 = new THREE.SpotLight( 0xffffff, 1);
-		this.luz_nivel_1.position.set( 60, 1000, 40 );
-
-		this.luz_nivel_2 = new THREE.SpotLight( 0xfcba03, 0.5);
-		this.luz_nivel_2.position.set( 60, 1000, 40 );
-
-		this.luz_nivel_3 = new THREE.SpotLight( 0x0044b3, 0.5);
-		this.luz_nivel_3.position.set( 60, 1000, 40 );
+		this.spotLight = new THREE.SpotLight( 0xffffff, 1);
+		this.spotLight.position.set( 60, 1000, 40 );
+		this.add (this.spotLight);
 
 		//Y otra luz focal para el menú
 		this.spotLightMenu = new THREE.SpotLight( 0xffffff, 0.7);
@@ -241,17 +230,18 @@ class MyScene extends THREE.Scene {
 			if(obj.x > this.sombrero1.position.x-this.sombrero1.getAnchura() &&
 			        obj.x < this.sombrero1.position.x+this.sombrero1.getAnchura()){
 				console.log("sombrero 1")
-				this.add(luz_nivel_1);
+				this.spotLight.intensity = 0.7;
 			}
 			else if(obj.x > this.sombrero2.position.x-this.sombrero2.getAnchura() &&
 			        obj.x < this.sombrero2.position.x+this.sombrero2.getAnchura()){
 				console.log("sombrero 2")
-				this.add(luz_nivel_2);
+				this.spotLight.color.setHex(0xffe878);
+				this.spotLight.intensity = 0.5;
 			}
 			else if(obj.x > this.sombrero3.position.x-this.sombrero3.getAnchura() &&
 			        obj.x < this.sombrero3.position.x+this.sombrero3.getAnchura()){
 				console.log("sombrero 3")
-				this.add(luz_nivel_3);
+				this.spotLight.intensity = 0.25;
 			}
 		}
 	}
