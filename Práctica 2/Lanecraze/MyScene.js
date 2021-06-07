@@ -8,6 +8,7 @@ import { Ornitorrinco } from './Ornitorrinco.js'
 import { Menu } from './Menu.js'
 import { Sombrero } from './Sombrero.js'
 import { Nivel } from './Nivel.js'
+import { NivelNoche } from './NivelNoche.js'
 
 class MyScene extends THREE.Scene {
 	constructor (myCanvas) {
@@ -294,7 +295,7 @@ class MyScene extends THREE.Scene {
 				v_gen[8] = new THREE.Vector2(2,2);
 				v_gen[9] = new THREE.Vector2(5,0);
 
-				this.nivel = new Nivel(v_gen);
+				this.nivel = new NivelNoche(v_gen);
 				this.add(this.nivel);
 			}
 		}

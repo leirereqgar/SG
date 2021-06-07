@@ -19,7 +19,7 @@ class Farola extends THREE.Object3D {
 			});
 		});
 
-		this.luz = new THREE.PointLight( 0xffb700, 1, 500 );
+		this.luz = new THREE.PointLight( 0xffb700, 0.7, 500 );
 		this.luz.position.set( 0, 3, 0 );
 		this.luz.castShadow = true;
 
