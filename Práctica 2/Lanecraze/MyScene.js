@@ -8,6 +8,7 @@ import { Ornitorrinco } from './Ornitorrinco.js'
 import { Menu } from './Menu.js'
 import { Sombrero } from './Sombrero.js'
 import { Nivel } from './Nivel.js'
+import { NivelNoche } from './NivelNoche.js'
 
 class MyScene extends THREE.Scene {
 	constructor (myCanvas) {
@@ -32,9 +33,9 @@ class MyScene extends THREE.Scene {
 		//Definimos las opciones del menú, que son sombreros. Serán clickeables
 		this.objetos_menu = [];
 
-		this.sombrero1 = new Sombrero();
-		this.sombrero2 = new Sombrero();
-		this.sombrero3 = new Sombrero();
+		this.sombrero1 = new Sombrero("fedora");
+		this.sombrero2 = new Sombrero("gorra");
+		this.sombrero3 = new Sombrero("sombrero_copa");
 
 		this.sombrero1.position.x=5;
 		this.sombrero2.position.x=20;
@@ -53,7 +54,7 @@ class MyScene extends THREE.Scene {
 		this.add(this.sombrero2);
 		this.add(this.sombrero3);
 
-		//Definimos el modelo del ornitorrinco
+		//Definimos el modelo del ornifedoratorrinco
 		this.model = new Ornitorrinco();
 		this.model.position.set(7.5,3.5,0);
 		this.add (this.model);
@@ -280,7 +281,7 @@ class MyScene extends THREE.Scene {
 			else if(obj.x > this.sombrero3.position.x-this.sombrero3.getAnchura() &&
 			        obj.x < this.sombrero3.position.x+this.sombrero3.getAnchura()){
 				//console.log("sombrero 3")
-				this.spotLight.intensity = 0.25;
+				this.spotLight.intensity = 0;
 
 				var v_gen = new Array(10);
 				v_gen[0] = new THREE.Vector2(5,0);
@@ -294,7 +295,7 @@ class MyScene extends THREE.Scene {
 				v_gen[8] = new THREE.Vector2(2,2);
 				v_gen[9] = new THREE.Vector2(5,0);
 
-				this.nivel = new Nivel(v_gen);
+				this.nivel = new NivelNoche(v_gen);
 				this.add(this.nivel);
 			}
 		}
@@ -322,64 +323,56 @@ class MyScene extends THREE.Scene {
 		requestAnimationFrame(() => this.update())
 	}
 
+	meta() {
+		var final = false;
+
+		if(this.nivel.meta(this.model)){
+			this.putMenu();
+			this.model.position.set(7.5,3.5,0);
+			this.add (this.model);
+			this.remove(this.nivel);
+			this.nivel = null;
+			final = true;
+		}
+
+		return final;
+	}
+
 	onKeyDown(event) {
 		var key = event.which || event.keyCode;
 		//console.log(key);
+		if (this.nivel != null) {
+			switch(key) {
+				case 37:
+					var nueva_pos = this.model.siguientePos("LEFT");
+					if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos))
+						this.model.mover("LEFT"); //Izquierda
 
-		switch(key) {
-			case 37:
-				var nueva_pos = this.model.siguientePos("LEFT");
-				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
-					this.model.mover("LEFT"); //Izquierda
+					this.meta();
+				break;
+				case 38:
+					var nueva_pos = this.model.siguientePos("UP");
+					if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos))
+						this.model.mover("UP"); //Arriba
 
-				if(this.nivel.meta(this.model)){
-					this.putMenu();
-					this.model.position.set(7.5,3.5,0);
-					this.add (this.model);
-					this.remove(this.nivel);
-					this.nivel = null;
-				}
-			break;
-			case 38:
-				var nueva_pos = this.model.siguientePos("UP");
-				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
-					this.model.mover("UP"); //Arriba
+					//console.log(this.nivel.meta(this.model))
+					this.meta();
+				break;
+				case 39:
+					var nueva_pos = this.model.siguientePos("RIGHT");
+					if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos))
+						this.model.mover("RIGHT");// Derecha
 
-				//console.log(this.nivel.meta(this.model))
-				if(this.nivel.meta(this.model)){
-					this.putMenu();
-					this.model.position.set(7.5,3.5,0);
-					this.add (this.model);
-					this.remove(this.nivel);
-					this.nivel = null;
-				}
-			break;
-			case 39:
-				var nueva_pos = this.model.siguientePos("RIGHT");
-				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
-					this.model.mover("RIGHT");// Derecha
+					this.meta();
+				break;
+				case 40:
+					var nueva_pos = this.model.siguientePos("DOWN");
+					if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos))
+						this.model.mover("DOWN"); // abajo
 
-				if(this.nivel.meta(this.model)){
-					this.putMenu();
-					this.model.position.set(7.5,3.5,0);
-					this.add (this.model);
-					this.remove(this.nivel);
-					this.nivel = null;
-				}
-			break;
-			case 40:
-				var nueva_pos = this.model.siguientePos("DOWN");
-				if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
-					this.model.mover("DOWN"); // abajo
-
-				if(this.nivel.meta(this.model)){
-					this.putMenu();
-					this.model.position.set(7.5,3.5,0);
-					this.add (this.model);
-					this.remove(this.nivel);
-					this.nivel = null;
-				}
-			break;
+					this.meta();
+				break;
+			}
 		}
 	}
 }

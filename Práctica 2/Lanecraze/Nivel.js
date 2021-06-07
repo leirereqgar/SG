@@ -11,6 +11,7 @@ import { Nenufar } from './Nenufar.js'
 import { Coche } from './Coche.js'
 import { Ornitorrinco } from './Ornitorrinco.js'
 import { Sombrero } from './Sombrero.js'
+import { Farola } from './Farola.js'
 
 class Nivel extends THREE.Object3D {
 	constructor(v_gen) {
@@ -33,6 +34,7 @@ class Nivel extends THREE.Object3D {
 		arbusto.position.set(30+15/2,0,-30);*/
 
 		this.generaArboles();
+		this.generaNenufares();
 		this.generaCoches();
 
 		this.obstaculos = new Array();
@@ -53,9 +55,12 @@ class Nivel extends THREE.Object3D {
 		this.add(arbol);
 		this.add(arbusto);*/
 
-		this.sombrero = new Sombrero();
+		this.sombrero = new Sombrero("fedora");
 		this.sombrero.position.set(this.sombrero.getAnchura()/2+7.5, 3, -this.suelo.getLargo()+30);
 		this.add(this.sombrero);
+
+		//this.farola = new Farola();
+		//this.add(this.farola)
 
 	}
 
@@ -162,30 +167,76 @@ class Nivel extends THREE.Object3D {
 		}
 	}
 
+	generaNenufares() {
+		this.nenufares = [];
+		this.num_nenufares = 0;
+
+		var tablero = this.suelo.getTableroVirtual();
+
+
+		for(var i=4; i<this.largo-5; i++){
+			if(tablero[i].getTipo() == 2){
+
+				const num_nenufares_actuales = Math.random() * (9 - 6) + 6;
+ 				// var num_obstaculos = ((this.ancho * 0.2) | 0) + (Math.random() < 0.5 ? 0 : 1);
+
+				for(let n=0; n<num_nenufares_actuales ; n++){
+					const pos_nuevo_nenufar = ~~(Math.random() * 10);
+
+					this.nenufares[this.num_nenufares] = new Nenufar();
+
+					var posicion = this.posicionAleatoriaX();
+					this.nenufares[this.num_nenufares].position.set(posicion, 0,-i*(this.block));
+
+					this.add(this.nenufares[this.num_nenufares]);
+					this.num_nenufares++;
+				}
+			}
+		}
+	}
+
 	inBounds(coord) {
 		return this.suelo.inBounds(coord);
 	}
 
 	isWater(coord) {
+		var agua = false;
 		var tablero = this.suelo.getTableroVirtual();
 
-		return (tablero[Math.abs(Math.round(coord)/this.suelo.getBloque())].getTipo() == 2);
+		if(tablero[Math.abs(Math.round(coord.z)/this.suelo.getBloque())].getTipo() == 2) {
+			var colision = false;
+
+			var caja_pj = new THREE.Box3().setFromCenterAndSize(coord,
+				                  new THREE.Vector3(15/2,15/2,15/2));
+
+			for(var i = 0; i < this.nenufares.length && !colision; i++){
+				//console.log(this.obstaculos[i].position)
+				var caja_obs = new THREE.Box3().setFromObject(this.nenufares[i]);
+
+				colision = caja_pj.intersectsBox(caja_obs);
+			}
+
+			agua = !colision;
+		}
+
+		return agua;
 	}
 
 	intersect(nueva_pos){
 		var colision = false;
+		var tablero = this.suelo.getTableroVirtual();
 
-		var caja_pj = new THREE.Box3().setFromCenterAndSize(nueva_pos,
-			                  new THREE.Vector3(15/2,15/2,15/2));
+		if(tablero[Math.abs(Math.round(nueva_pos.z)/this.suelo.getBloque())].getTipo() == 0) {
+			var caja_pj = new THREE.Box3().setFromCenterAndSize(nueva_pos,
+				                  new THREE.Vector3(15/2,15/2,15/2));
 
-		for(var i = 0; i < this.obstaculos.length && !colision; i++){
-			//console.log(this.obstaculos[i].position)
-			var caja_obs = new THREE.Box3().setFromObject(this.obstaculos[i]);
+			for(var i = 0; i < this.obstaculos.length && !colision; i++){
+				//console.log(this.obstaculos[i].position)
+				var caja_obs = new THREE.Box3().setFromObject(this.obstaculos[i]);
 
-			colision = caja_pj.intersectsBox(caja_obs);
+				colision = caja_pj.intersectsBox(caja_obs);
+			}
 		}
-
-		//console.log(colision)
 
 		return colision;
 	}

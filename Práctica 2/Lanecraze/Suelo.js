@@ -39,6 +39,12 @@ class Suelo extends THREE.Object3D {
 		road_texture.wrapS = road_texture.wrapT = THREE.RepeatWrapping;
 		road_texture.repeat.set(this.casillas_ancho,1);
 		this.road_material = new THREE.MeshPhongMaterial ({map: road_texture});
+
+		const leaves_texture = loader.load('../imgs/leaves-texture.png');
+		leaves_texture.wrapS = leaves_texture.wrapT = THREE.RepeatWrapping;
+		leaves_texture.repeat.set(this.casillas_largo,2);
+		this.leaves_material = new THREE.MeshPhongMaterial ({map: leaves_texture,transparent: true});
+		this.leaves_matrial
 	}
 
 	crearTableroVirtual(v_gen) {
@@ -64,7 +70,7 @@ class Suelo extends THREE.Object3D {
 		this.ground = new THREE.Object3D();
 		var offset = this.largo/2;
 		for(var i = 0; i < this.casillas_largo; i++) {
-			var geometryGround = new THREE.BoxGeometry (this.ancho,0.2,this.bloque);
+			var geometryGround = new THREE.BoxGeometry (this.ancho + 30,0.2,this.bloque);
 			switch (this.tablero_virtual[i].getTipo()) {
 				case 0:
 					var fila = new THREE.Mesh(geometryGround, this.grass_material);
@@ -93,6 +99,25 @@ class Suelo extends THREE.Object3D {
 			}
 			offset -= this.bloque;
 		}
+
+		var geom_valla = new THREE.BoxGeometry (this.bloque,this.bloque*2,this.largo);
+		var valla = new THREE.Mesh(geom_valla, this.leaves_material);
+		valla.position.set(-this.ancho/2-7.5,15,7.5)
+
+		this.add(valla);
+
+		geom_valla = new THREE.BoxGeometry (this.bloque,this.bloque*2,this.largo);
+		valla = new THREE.Mesh(geom_valla, this.leaves_material);
+		valla.position.set(this.ancho/2+7.5,15,7.5)
+
+		this.add(valla);
+
+		geom_valla = new THREE.BoxGeometry (this.ancho,this.bloque*2,this.bloque);
+		valla = new THREE.Mesh(geom_valla, this.leaves_material);
+		valla.position.set(0,15,-this.largo/2)
+
+		this.add(valla);
+
 
 	}
 

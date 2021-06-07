@@ -1,28 +1,70 @@
 import * as THREE from '../libs/three.module.js'
-
+import { OBJLoader } from '../libs/OBJLoader.js'
+import { MTLLoader } from '../libs/MTLLoader.js'
 
 class Sombrero extends THREE.Object3D {
-	constructor() {
+	constructor(tipo) {
 		super();
 		this.anchura = 4;
 
-		this.crearSombrero();
+		switch(tipo) {
+			case "fedora":
+				this.crearFedora();
+			break;
+			case "gorra":
+				this.crearGorra();
+			break;
+			case "sombrero_copa":
+				this.crearSombreroCopa();
+			break;
+		}
 
 		this.add(this.sombrero);
 	}
 
-	crearSombrero() {
-		this.marron  = new THREE.MeshPhongMaterial({color:0x69321e});
+	crearFedora(){
+		const obj_loader = new OBJLoader();
+		const mtl_loader = new MTLLoader();
 
-		var ala = new THREE.Mesh(new THREE.BoxGeometry(this.anchura,1,this.anchura), this.marron);
-		var copa = new THREE.Mesh(new THREE.CylinderGeometry(1,2,2,4), this.marron);
-		copa.position.y = 1;
+		mtl_loader.load('../models/fedora/fedora.mtl', (mtl)=>{
+			mtl.preload();
+			obj_loader.setMaterials(mtl);
+			obj_loader.load('../models/fedora/fedora.obj', (root) =>{
+				root.scale.set(4,4,4);
+				root.translateY(1);
+				this.add(root);
+			});
+		});
+	}
 
-		this.sombrero = new THREE.Object3D();
-		this.sombrero.add(ala);
-		this.sombrero.add(copa);
-		this.sombrero.position.y = 3;
-		this.sombrero.position.z = 3.5;
+	crearGorra(){
+		const obj_loader = new OBJLoader();
+		const mtl_loader = new MTLLoader();
+
+		mtl_loader.load('../models/gorra/cap.mtl', (mtl)=>{
+			mtl.preload();
+			obj_loader.setMaterials(mtl);
+			obj_loader.load('../models/gorra/cap.obj', (root) =>{
+				root.scale.set(1,1,1);
+				root.translateY(1);
+				this.add(root);
+			});
+		});
+	}
+
+	crearSombreroCopa(){
+		const obj_loader = new OBJLoader();
+		const mtl_loader = new MTLLoader();
+
+		mtl_loader.load('../models/s_copa/s_copa.mtl', (mtl)=>{
+			mtl.preload();
+			obj_loader.setMaterials(mtl);
+			obj_loader.load('../models/s_copa/s_copa.obj', (root) =>{
+				root.scale.set(0.1,0.1,0.1);
+				root.translateY(1);
+				this.add(root);
+			});
+		});
 	}
 
 	getAnchura(){
