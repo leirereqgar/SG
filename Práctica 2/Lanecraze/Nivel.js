@@ -137,6 +137,8 @@ class Nivel extends THREE.Object3D {
 		this.coches = [];
 		this.num_coches = 0;
 
+		this.coches_hitbox = [];
+
 		var that = this;
 
 		var tablero = [];
@@ -151,10 +153,15 @@ class Nivel extends THREE.Object3D {
 
 				if(direccion == "IZDA"){
 					this.coches[this.num_coches].position.x = -4 * (this.block) - (this.block/2);
+					var box = new THREE.Box3().setFromObject(this.coches[this.num_coches]);
+					this.coches_hitbox.push(box);
 				}
 
 				if(direccion == "DCHA"){
 					this.coches[this.num_coches].position.x = 4 * (this.block) - (this.block/2);
+					this.coches[this.num_coches].position.x = -4 * (this.block) - (this.block/2);
+					var box = new THREE.Box3().setFromObject(this.coches[this.num_coches]);
+					this.coches_hitbox.push(box);
 				}
 
 					this.coches[this.num_coches].position.z = -i*(this.block);
@@ -177,8 +184,7 @@ class Nivel extends THREE.Object3D {
 		for(var i=4; i<this.largo-5; i++){
 			if(tablero[i].getTipo() == 2){
 
-				const num_nenufares_actuales = Math.random() * (9 - 6) + 6;
- 				// var num_obstaculos = ((this.ancho * 0.2) | 0) + (Math.random() < 0.5 ? 0 : 1);
+				const num_nenufares_actuales = Math.random() * (11 - 7) + 7;
 
 				for(let n=0; n<num_nenufares_actuales ; n++){
 					const pos_nuevo_nenufar = ~~(Math.random() * 10);
@@ -236,6 +242,25 @@ class Nivel extends THREE.Object3D {
 
 				colision = caja_pj.intersectsBox(caja_obs);
 			}
+		}
+
+		return colision;
+	}
+
+	colisionCoche(pos){
+		var colision = false;
+		var tablero = this.suelo.getTableroVirtual();
+
+		if(tablero[Math.abs(Math.round(pos.z)/this.suelo.getBloque())].getTipo() == 1) {
+			var caja_pj = new THREE.Box3().setFromCenterAndSize(pos,
+				                  new THREE.Vector3(15/2,15/2,15/2));
+
+			for(var i = 0; i < 10 && !colision; i++){
+				var caja_obs = new THREE.Box3().setFromObject(this.coches[i]);
+				colision = caja_pj.intersectsBox(caja_obs);
+			}
+
+			//console.log(caja_pj.intersectsBox(this.coches[0]))
 		}
 
 		return colision;
