@@ -5,10 +5,11 @@ import {TipoSuelo} from './TipoSuelo.js'
 class Suelo extends THREE.Object3D {
 	constructor(v_gen) {
 		super();
+		this.bloque = 15;
 		this.casillas_ancho = 10;
 		this.casillas_largo = this.casillas_ancho * 3;
-		this.ancho = this.casillas_ancho * 15;
-		this.largo = this.casillas_largo * 15;
+		this.ancho = this.casillas_ancho * this.bloque;
+		this.largo = this.casillas_largo * this.bloque;
 
 		this.crearMateriales();
 
@@ -63,7 +64,7 @@ class Suelo extends THREE.Object3D {
 		this.ground = new THREE.Object3D();
 		var offset = this.largo/2;
 		for(var i = 0; i < this.casillas_largo; i++) {
-			var geometryGround = new THREE.BoxGeometry (this.ancho,0.2,15);
+			var geometryGround = new THREE.BoxGeometry (this.ancho,0.2,this.bloque);
 			switch (this.tablero_virtual[i].getTipo()) {
 				case 0:
 					var fila = new THREE.Mesh(geometryGround, this.grass_material);
@@ -90,7 +91,7 @@ class Suelo extends THREE.Object3D {
 
 					this.ground.add(fila);
 			}
-			offset -= 15;
+			offset -= this.bloque;
 		}
 
 	}
@@ -116,7 +117,7 @@ class Suelo extends THREE.Object3D {
 		/* Estará fuera del tablero si coord.z es mayor que 0, porque vamos en sentido del ejeZ negativo
 		o si coord.z es menor que this.largo, porque matemáticas
 		*/
-		if (Math.round(coord.z) > 0 || Math.round(coord.z) < -this.largo+15)
+		if (Math.round(coord.z) > 0 || Math.round(coord.z) < -this.largo+this.bloque)
 			in_bounds = false;
 
 		return in_bounds;
