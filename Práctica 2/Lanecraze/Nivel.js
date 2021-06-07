@@ -32,7 +32,8 @@ class Nivel extends THREE.Object3D {
 		var arbusto = new Arbol(2);
 		arbusto.position.set(30+15/2,0,-30);*/
 
-		this.generaArboles()
+		this.generaArboles();
+		this.generaNenufares();
 
 		this.obstaculos = new Array();
 
@@ -133,6 +134,31 @@ class Nivel extends THREE.Object3D {
 	/*generaCoches(){
 
 	}*/
+
+	generaNenufares() {
+		this.nenufares = [];
+
+		this.num_nenufares = 0;
+
+		var tablero = this.suelo.getTableroVirtual();
+
+
+		for(var i=4; i<this.largo-5; i++){
+			if(tablero[i].getTipo() == 2){
+				var num_obstaculos = ((this.ancho * 0.3) | 0) + (Math.random() < 0.5 ? 0 : 1);
+
+				for(var j=0; j<num_obstaculos ; j++){
+						this.nenufares[this.num_nenufares] = new Nenufar();
+
+						var posicion = this.posicionAleatoriaX();
+						this.nenufares[this.num_nenufares].position.set(posicion, 0,-i*(this.block));
+
+						this.add(this.nenufares[this.num_nenufares]);
+						this.num_nenufares++;
+				}
+			}
+		}
+	}
 
 	inBounds(coord) {
 		return this.suelo.inBounds(coord);

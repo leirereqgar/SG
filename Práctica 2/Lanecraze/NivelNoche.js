@@ -24,17 +24,22 @@ class NivelNoche extends Nivel {
 
 	crearFarolas() {
 		for (var i = 1; i < this.suelo.getTableroVirtual().length; i+=3) {
-			var farola = new Farola();
 
-			if (i%2 == 0){
-				farola.position.set(30,0,-i*15);
+			if(this.suelo.getTableroVirtual()[i].getTipo() == 0){
+				var farola = new Farola();
+
+				if (i%2 == 0){
+					farola.position.set(37.5,0,-i*15);
+				}
+
+				else {
+					farola.position.set(-37.5,0,-i*15);
+				}
+
+				this.obstaculos.push(farola);
+
+				this.add(farola);
 			}
-
-			else {
-				farola.position.set(-30,0,-i*15);
-			}
-
-			this.add(farola);
 		}
 	}
 }

@@ -7,12 +7,12 @@ class Nenufar extends THREE.Object3D {
 
 		this.crearMateriales();
 
-		var geom_muesca = new THREE.CylinderGeometry( 10, 10, 3, 3 );
+		var geom_muesca = new THREE.CylinderGeometry( 7.5, 7.5, 3, 3 );
 		var muesca = new THREE.Mesh(geom_muesca, this.verde);
 
 		geom_muesca.translate(0,0,-9);
 
-		var geom_hoja = new THREE.CylinderGeometry( 13, 13, 1, 17 );
+		var geom_hoja = new THREE.CylinderGeometry( 7.5, 7.5, 1, 17);
 		var hoja = new THREE.Mesh(geom_hoja, this.verde);
 
 
