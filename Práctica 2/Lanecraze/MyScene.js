@@ -311,7 +311,7 @@ class MyScene extends THREE.Scene {
 		this.model.update();
 
 		this.muerteCamara();
-		//this.muerteCoche();
+		this.muerteCoche();
 
 		if(this.nivel != null){
 			this.nivel.update();
@@ -385,7 +385,7 @@ class MyScene extends THREE.Scene {
 				break;
 				case 38:
 					var nueva_pos = this.model.siguientePos("UP");
-					if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos)&&!this.nivel.colisionCoche(nueva_pos))
+					if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos))
 						this.model.mover("UP"); //Arriba
 
 					//console.log(this.nivel.meta(this.model))
