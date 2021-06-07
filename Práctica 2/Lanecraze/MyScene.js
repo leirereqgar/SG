@@ -342,14 +342,14 @@ class MyScene extends THREE.Scene {
 			switch(key) {
 				case 37:
 					var nueva_pos = this.model.siguientePos("LEFT");
-					if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
+					if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos))
 						this.model.mover("LEFT"); //Izquierda
 
 					this.meta();
 				break;
 				case 38:
 					var nueva_pos = this.model.siguientePos("UP");
-					if(this.nivel.inBounds(nueva_pos) /*&& !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z)*/)
+					if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos))
 						this.model.mover("UP"); //Arriba
 
 					//console.log(this.nivel.meta(this.model))
@@ -357,14 +357,14 @@ class MyScene extends THREE.Scene {
 				break;
 				case 39:
 					var nueva_pos = this.model.siguientePos("RIGHT");
-					if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
+					if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos))
 						this.model.mover("RIGHT");// Derecha
 
 					this.meta();
 				break;
 				case 40:
 					var nueva_pos = this.model.siguientePos("DOWN");
-					if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos.z))
+					if(this.nivel.inBounds(nueva_pos) && !this.nivel.intersect(nueva_pos) && !this.nivel.isWater(nueva_pos))
 						this.model.mover("DOWN"); // abajo
 
 					this.meta();

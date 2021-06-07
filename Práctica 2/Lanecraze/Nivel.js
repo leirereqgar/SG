@@ -137,24 +137,32 @@ class Nivel extends THREE.Object3D {
 
 	generaNenufares() {
 		this.nenufares = [];
-
 		this.num_nenufares = 0;
+
+		let nenufares_transitables = [];
+		let nenufares_actuales = [];
 
 		var tablero = this.suelo.getTableroVirtual();
 
 
 		for(var i=4; i<this.largo-5; i++){
 			if(tablero[i].getTipo() == 2){
-				var num_obstaculos = ((this.ancho * 0.3) | 0) + (Math.random() < 0.5 ? 0 : 1);
+				if (tablero[i-1] != 2)
+					nenufares_transitables = nenufares_actuales = []
 
-				for(var j=0; j<num_obstaculos ; j++){
-						this.nenufares[this.num_nenufares] = new Nenufar();
+				const num_nenufares_actuales = Math.random() * (9 - 6) + 6;
+ 				// var num_obstaculos = ((this.ancho * 0.2) | 0) + (Math.random() < 0.5 ? 0 : 1);
 
-						var posicion = this.posicionAleatoriaX();
-						this.nenufares[this.num_nenufares].position.set(posicion, 0,-i*(this.block));
+				for(let n=0; n<num_nenufares_actuales ; n++){
+					const pos_nuevo_nenufar = ~~(Math.random() * 10);
 
-						this.add(this.nenufares[this.num_nenufares]);
-						this.num_nenufares++;
+					this.nenufares[this.num_nenufares] = new Nenufar();
+
+					var posicion = this.posicionAleatoriaX();
+					this.nenufares[this.num_nenufares].position.set(posicion, 0,-i*(this.block));
+
+					this.add(this.nenufares[this.num_nenufares]);
+					this.num_nenufares++;
 				}
 			}
 		}
@@ -165,25 +173,43 @@ class Nivel extends THREE.Object3D {
 	}
 
 	isWater(coord) {
+		var agua = false;
 		var tablero = this.suelo.getTableroVirtual();
 
-		return (tablero[Math.abs(Math.round(coord)/this.suelo.getBloque())].getTipo() == 2);
+		if(tablero[Math.abs(Math.round(coord.z)/this.suelo.getBloque())].getTipo() == 2) {
+			var colision = false;
+
+			var caja_pj = new THREE.Box3().setFromCenterAndSize(coord,
+				                  new THREE.Vector3(15/2,15/2,15/2));
+
+			for(var i = 0; i < this.nenufares.length && !colision; i++){
+				//console.log(this.obstaculos[i].position)
+				var caja_obs = new THREE.Box3().setFromObject(this.nenufares[i]);
+
+				colision = caja_pj.intersectsBox(caja_obs);
+			}
+
+			agua = !colision;
+		}
+
+		return agua;
 	}
 
 	intersect(nueva_pos){
 		var colision = false;
+		var tablero = this.suelo.getTableroVirtual();
 
-		var caja_pj = new THREE.Box3().setFromCenterAndSize(nueva_pos,
-			                  new THREE.Vector3(15/2,15/2,15/2));
+		if(tablero[Math.abs(Math.round(nueva_pos.z)/this.suelo.getBloque())].getTipo() == 0) {
+			var caja_pj = new THREE.Box3().setFromCenterAndSize(nueva_pos,
+				                  new THREE.Vector3(15/2,15/2,15/2));
 
-		for(var i = 0; i < this.obstaculos.length && !colision; i++){
-			//console.log(this.obstaculos[i].position)
-			var caja_obs = new THREE.Box3().setFromObject(this.obstaculos[i]);
+			for(var i = 0; i < this.obstaculos.length && !colision; i++){
+				//console.log(this.obstaculos[i].position)
+				var caja_obs = new THREE.Box3().setFromObject(this.obstaculos[i]);
 
-			colision = caja_pj.intersectsBox(caja_obs);
+				colision = caja_pj.intersectsBox(caja_obs);
+			}
 		}
-
-		//console.log(colision)
 
 		return colision;
 	}
