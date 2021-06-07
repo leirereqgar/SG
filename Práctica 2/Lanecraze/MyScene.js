@@ -328,6 +328,12 @@ class MyScene extends THREE.Scene {
 			this.add (this.model);
 			this.remove(this.nivel);
 			this.nivel = null;
+
+			this.camera.position.set (this.model.position.x+10, this.model.position.y + 75 , this.model.position.z + 45);
+			var look = new THREE.Vector3 (this.model.position.x, this.model.position.y + 5 , this.model.position.z + 5);
+			this.camera.lookAt(look);
+			this.add (this.camera);
+
 			final = true;
 		}
 
