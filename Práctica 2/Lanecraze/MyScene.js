@@ -6,6 +6,7 @@ import { TrackballControls } from '../libs/TrackballControls.js'
 //PROYECTO
 import { Ornitorrinco } from './Ornitorrinco.js'
 import { Menu } from './Menu.js'
+import { Scoreboard } from './Scoreboard.js'
 import { Sombrero } from './Sombrero.js'
 import { Nivel } from './Nivel.js'
 import { NivelNoche } from './NivelNoche.js'
@@ -21,12 +22,20 @@ class MyScene extends THREE.Scene {
 		// Crear las luces
 		this.createLights ();
 
+		this.contador_meta = 0;
+		this.contador_muerte = 0;
 
 		//this.nivel = new Nivel();
 		//this.add(this.nivel);
 
 		//Definimos el menú, que consiste en un plano y texto
 		this.menu = new Menu();
+
+		this.scoreboard = new Scoreboard(this.contador_meta, this.contador_muerte);
+		this.scoreboard.position.y = 55;
+
+		this.add(this.scoreboard);
+
 		this.add (this.menu);
 		this.menu.position.y = 60;
 
@@ -100,7 +109,9 @@ class MyScene extends THREE.Scene {
 	}
 
 	cameraUpdate() {
-		this.camera.position.z -= 0.3;
+		if(this.nivel != null){
+			this.camera.position.z -= 0.35;
+		}
 
 //		this.camera.position.set (this.model.position.x+10, this.model.position.y + 40 , this.model.position.z + 50);
 		var look = new THREE.Vector3 (this.camera.position.x - 15, this.camera.position.y - 50 , this.camera.position.z - 40);
@@ -164,6 +175,10 @@ class MyScene extends THREE.Scene {
 		this.renderer.render(this, this.camera);
 		this.setCameraAspect(window.innerWidth / window.innerHeight);
 
+		this.scoreboard = new Scoreboard(this.contador_meta, this.contador_muerte);
+		this.scoreboard.position.y = 55;
+		this.add(this.scoreboard);
+
 		this.add(this.menu);
 		this.add(this.sombrero1);
 		this.add(this.sombrero2);
@@ -171,6 +186,8 @@ class MyScene extends THREE.Scene {
 	}
 
 	leaveMenu () {
+		this.remove(this.scoreboard);
+
 		this.camera_actual = 1;
 		this.activeCamera = this.camera;
 		this.renderer.render (this, this.camera);
@@ -229,6 +246,7 @@ class MyScene extends THREE.Scene {
 
 		if ( seleccion.length > 0 ) {
 			this.leaveMenu();
+			this.remove(this.scoreboard);
 			this.remove(this.menu);
 			this.remove(this.sombrero1);
 			this.remove(this.sombrero2);
@@ -326,16 +344,20 @@ class MyScene extends THREE.Scene {
 		var final = false;
 
 		if(this.nivel.meta(this.model)){
+			this.scoreboard = null;
+			this.contador_meta++;
 			this.putMenu();
 			this.model.position.set(7.5,3.5,0);
 			this.add (this.model);
 			this.remove(this.nivel);
 			this.nivel = null;
 
+
 			this.camera.position.set (this.model.position.x+10, this.model.position.y + 75 , this.model.position.z + 45);
 			var look = new THREE.Vector3 (this.model.position.x, this.model.position.y + 5 , this.model.position.z + 5);
 			this.camera.lookAt(look);
 			this.add (this.camera);
+
 
 			final = true;
 		}
@@ -353,11 +375,15 @@ class MyScene extends THREE.Scene {
 	}
 
 	muerte() {
+			this.contador_muerte++;
+
+			this.scoreboard = null;
 			this.putMenu();
 			this.model.position.set(7.5,3.5,0);
 			this.add (this.model);
 			this.remove(this.nivel);
 			this.nivel = null;
+
 
 			this.camera.position.set (this.model.position.x+10, this.model.position.y + 75 , this.model.position.z + 45);
 			var look = new THREE.Vector3 (this.model.position.x, this.model.position.y + 5 , this.model.position.z + 5);
