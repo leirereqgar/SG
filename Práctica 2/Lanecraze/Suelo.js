@@ -117,8 +117,6 @@ class Suelo extends THREE.Object3D {
 		valla.position.set(0,15,-this.largo/2)
 
 		this.add(valla);
-
-
 	}
 
 	getAncho() {

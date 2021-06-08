@@ -8,10 +8,8 @@ class Menu extends THREE.Object3D {
 		this.crearMateriales();
 		this.crearFondo();
 		this.crearTitulo();
-		//this.crearScoreboard(0,0);
 
 		this.add(this.fondo);
-		//this.add(this.titulo);
 	}
 
 	crearMateriales(){
@@ -47,36 +45,6 @@ class Menu extends THREE.Object3D {
 			that.add(titulo);
 		});
 	}
-
-	crearScoreboard(win, lose){
-		var that = this;
-		var loader = new THREE.FontLoader();
-
-		var scoreboard = null;
-
-		loader.load('../fonts/SigmarOne_Regular.json', function ( font ) {
-			var size = 1;
-
-			var geometry = new THREE.TextGeometry( 'Victorias: '+win+ ' Derrotas: ' +lose, {
-				font: font,
-				size: size,
-				height: size/5,
-				curveSegments: 5,
-				bevelEnabled: false,
-				bevelThickness: size/5,
-				bevelSize: size/200,
-				bevelOffset: 0,
-				bevelSegments: 2
-			});
-
-			geometry.translate(0, -5, 0);
-
-			var scoreboard = new THREE.Mesh(geometry, that.blanco);
-			that.add(scoreboard);
-		});
-	}
-
-
 }
 
 export { Menu }

@@ -17,7 +17,6 @@ class Ornitorrinco extends THREE.Object3D {
 		this.crearCuerpo();
 		this.crearCola();
 		this.crearPatas();
-		//this.crearSombrero();
 
 		// Tenemos un nodo justo antes del this para que al mover el personaje los controles no queden invertidos
 		this.movil = new THREE.Object3D();
@@ -30,8 +29,6 @@ class Ornitorrinco extends THREE.Object3D {
 
 		this.add(this.movil);
 		this.rotateY(Math.PI);
-
-		//this.add(this.sombrero);
 	}
 
 	crearMateriales() {
@@ -115,18 +112,6 @@ class Ornitorrinco extends THREE.Object3D {
 		this.pata_tras_der = pata.clone();
 		this.pata_tras_der.position.x = -1.75
 		this.pata_tras_der.position.z = -5.5;
-	}
-
-	crearSombrero() {
-		var ala = new THREE.Mesh(new THREE.BoxGeometry(4.1,1,4.1), this.marron);
-		var copa = new THREE.Mesh(new THREE.CylinderGeometry(1,2,2,4), this.marron);
-		copa.position.y = 1;
-
-		this.sombrero = new THREE.Object3D();
-		this.sombrero.add(ala);
-		this.sombrero.add(copa);
-		this.sombrero.position.y = 3;
-		this.sombrero.position.z = 3.5;
 	}
 
 	siguientePos(direccion){

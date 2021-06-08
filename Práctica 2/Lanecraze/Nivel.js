@@ -27,12 +27,6 @@ class Nivel extends THREE.Object3D {
 		this.ancho = this.suelo.getAncho()/15;
 		this.largo = this.suelo.getLargo()/15;
 
-		/*var arbol = new Arbol(2);
-		arbol.position.set(-30+15/2,0,-30);
-
-		var arbusto = new Arbol(2);
-		arbusto.position.set(30+15/2,0,-30);*/
-
 		this.generaArboles();
 		this.generaNenufares();
 		this.generaCoches();
@@ -47,21 +41,10 @@ class Nivel extends THREE.Object3D {
 			this.obstaculos.push(this.arbustos[l]);
 		}
 
-		//console.log(this.obstaculos)
-
-
-		/*this.obstaculos.push(arbol);
-		this.obstaculos.push(arbusto);
-		this.add(arbol);
-		this.add(arbusto);*/
 
 		this.sombrero = new Sombrero(sombrero);
 		this.sombrero.position.set(this.sombrero.getAnchura()/2+7.5, 3, -this.suelo.getLargo()+30);
 		this.add(this.sombrero);
-
-		//this.farola = new Farola();
-		//this.add(this.farola)
-
 	}
 
 	posicionAleatoriaX(){
@@ -76,14 +59,6 @@ class Nivel extends THREE.Object3D {
 		var num_aleatorio = Math.round(Math.random() * (ancho_bloques - (ancho_bloques*-1)) + (ancho_bloques*-1));
 		//console.log(num_aleatorio);
 		var posicion = num_aleatorio * (this.block) - (this.block/2);
-
-		/*if(num_aleatorio == -5){
-			posicion += this.block;
-		}
-
-		if(num_aleatorio == 5){
-			posicion -= this.block;
-		}*/
 
 		return posicion;
 	}
@@ -237,7 +212,6 @@ class Nivel extends THREE.Object3D {
 				                  new THREE.Vector3(15/2,15/2,15/2));
 
 			for(var i = 0; i < this.obstaculos.length && !colision; i++){
-				//console.log(this.obstaculos[i].position)
 				var caja_obs = new THREE.Box3().setFromObject(this.obstaculos[i]);
 
 				colision = caja_pj.intersectsBox(caja_obs);
@@ -260,7 +234,6 @@ class Nivel extends THREE.Object3D {
 				colision = caja_pj.intersectsBox(caja_obs);
 			}
 
-			//console.log(caja_pj.intersectsBox(this.coches[0]))
 		}
 
 		return colision;
@@ -269,8 +242,6 @@ class Nivel extends THREE.Object3D {
 	meta(pj) {
 		var caja_pj = new THREE.Box3().setFromObject(pj);
 		var caja_sombrero = new THREE.Box3().setFromObject(this.sombrero);
-		//console.log(caja_sombrero)
-		//console.log(caja_pj)
 
 		return caja_pj.intersectsBox(caja_sombrero);
 	}
@@ -281,13 +252,6 @@ class Nivel extends THREE.Object3D {
 			var bonus = this.coches[i].getVelocidad();
 
 			this.coches[i].position.x = Math.sin(Date.now() * 0.001 * velocidad + bonus) * Math.PI * 20;
-
-		/*	if(this.coches[i].position.x <= this.ancho * this.block){
-				this.coches[i].position.x += 1;
-			} else{
-				this.coches[i].position.x -= 1;
-			}*/
-
 		}
 	}
 }
